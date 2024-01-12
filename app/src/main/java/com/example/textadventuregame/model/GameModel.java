@@ -44,11 +44,15 @@ public class GameModel {
         rooms = generator.getRooms();
     }
 
-    public void createPlayer(String name) {
-        player = new Player(name);
+    public void createPlayer(String name, Room startingLocation) {
+        player = new Player(name, startingLocation);
     }
 
     public void createInventory() {
         inventory = new Inventory();
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
     }
 }

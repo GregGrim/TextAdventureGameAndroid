@@ -13,14 +13,16 @@ public class GameController {
     public void gameStart(String playerName) {
         createGameModel();
         gameModel.createRooms();
-        gameModel.createPlayer(playerName); // name entered by user
+        gameModel.createPlayer(playerName, gameModel.getRooms().get(0)); // name entered by user
         gameModel.createInventory();
 
     }
 
-    public void gameLoad() {
-        loadRooms();
-        loadPlayer();
-        loadInventory();
-    }
+
+
+//    public void gameLoad() {
+//        loadRooms();
+//        loadPlayer();
+//        loadInventory();
+//    }
 }
