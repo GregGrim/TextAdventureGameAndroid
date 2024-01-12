@@ -1,8 +1,10 @@
-package com.example.textadventuregame;
+package com.example.textadventuregame.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.textadventuregame.R;
 
 public class MainActivity extends AppCompatActivity {
 
