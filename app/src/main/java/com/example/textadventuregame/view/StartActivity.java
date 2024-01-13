@@ -21,12 +21,15 @@ public class StartActivity extends AppCompatActivity {
     Button loadGame;
     Button backBtn;
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        setupControls();
+    }
 
+    @SuppressLint("SetTextI18n")
+    private void setupControls() {
         ImageView gifImageView = findViewById(R.id.gifImageView);
         String gifUrl = "https://media.tenor.com/jP0qr_Ha7_MAAAAj/darksouls-knight.gif";
         Glide.with(this)
@@ -45,7 +48,7 @@ public class StartActivity extends AppCompatActivity {
         newGame.setTextSize(18);
         newGame.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         newGame.setOnClickListener(view -> {
-            Intent aboutIntent = new Intent(StartActivity.this, newGameActivity.class);
+            Intent aboutIntent = new Intent(StartActivity.this, NewGameActivity.class);
             startActivity(aboutIntent);
         });
         loadGame = findViewById(R.id.loadGameBtn);
@@ -53,7 +56,7 @@ public class StartActivity extends AppCompatActivity {
         loadGame.setTextSize(18);
         loadGame.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         loadGame.setOnClickListener(view -> {
-            Intent aboutIntent = new Intent(StartActivity.this, loadGameActivity.class);
+            Intent aboutIntent = new Intent(StartActivity.this, LoadGameActivity.class);
             startActivity(aboutIntent);
         });
         backBtn = findViewById(R.id.backBtnStart);

@@ -67,8 +67,9 @@
         android:layout_width="476dp"
         android:layout_height="440dp"
         android:scaleType="fitXY"
-        app:srcCompat="@android:drawable/menuitem_background"
-        tools:layout_editor_absoluteX="-2dp"
-        tools:layout_editor_absoluteY="-2dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/menuitem_background" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

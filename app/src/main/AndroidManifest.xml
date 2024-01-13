@@ -15,10 +15,13 @@
         android:theme="@style/Theme.TextAdventureGame"
         tools:targetApi="31">
         <activity
-            android:name=".view.loadGameActivity"
+            android:name=".view.GameActivity"
             android:exported="false" />
         <activity
-            android:name=".view.newGameActivity"
+            android:name=".view.LoadGameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.NewGameActivity"
             android:exported="false" />
         <activity
             android:name=".view.HelpActivity"

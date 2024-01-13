@@ -30,6 +30,7 @@ android {
 
 dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation ("javax.xml.stream:stax-api:1.0-2")
     implementation ("javax.xml.bind:jaxb-api:2.3.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

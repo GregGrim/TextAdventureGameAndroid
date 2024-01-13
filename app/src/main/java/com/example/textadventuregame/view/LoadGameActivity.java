@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.textadventuregame.R;
 
-public class loadGameActivity extends AppCompatActivity {
+public class LoadGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
