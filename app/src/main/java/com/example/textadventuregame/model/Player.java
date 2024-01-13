@@ -32,4 +32,8 @@ public class Player {
     public void setLocation(Room location) {
         this.location = location;
     }
+
+    public String getName() {
+        return name;
+    }
 }

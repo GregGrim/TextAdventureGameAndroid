@@ -2,6 +2,10 @@ package com.example.textadventuregame.controller;
 
 import com.example.textadventuregame.model.GameModel;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+
 public class GameController {
     private GameModel gameModel;
 
@@ -18,11 +22,16 @@ public class GameController {
 
     }
 
+    public List<File> listSavedGames() {
+        String directoryPath = "..\\saves";
+        File directory = new File(directoryPath);
+        if (directory.isDirectory()) {
+            return Arrays.asList(directory.listFiles());
+        } else {
+            System.out.println("Provided path is not a directory.");
+        }
+        return null;
+    }
 
 
-//    public void gameLoad() {
-//        loadRooms();
-//        loadPlayer();
-//        loadInventory();
-//    }
 }

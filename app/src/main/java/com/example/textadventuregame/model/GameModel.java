@@ -55,4 +55,8 @@ public class GameModel {
     public List<Room> getRooms() {
         return rooms;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
