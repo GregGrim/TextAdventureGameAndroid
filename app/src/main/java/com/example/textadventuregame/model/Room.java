@@ -42,4 +42,12 @@ public class Room {
         builder.append("]");
         return  builder.toString();
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

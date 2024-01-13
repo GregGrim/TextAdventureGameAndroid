@@ -33,6 +33,10 @@ public class Player {
         this.location = location;
     }
 
+    public Room getLocation() {
+        return location;
+    }
+
     public String getName() {
         return name;
     }

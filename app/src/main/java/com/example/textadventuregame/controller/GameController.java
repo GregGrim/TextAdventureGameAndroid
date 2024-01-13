@@ -22,6 +22,13 @@ public class GameController {
 
     }
 
+    public String getLocationImageName() {
+        return gameModel.getPlayer().getLocation().getImage();
+    }
+    public String getLocationText() {
+        return gameModel.getPlayer().getLocation().getDescription();
+    }
+
     public List<File> listSavedGames() {
         String directoryPath = "..\\saves";
         File directory = new File(directoryPath);

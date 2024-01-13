@@ -54,6 +54,7 @@ public class NewGameActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Name is too long", Toast.LENGTH_SHORT).show();
             } else {
                 Intent aboutIntent = new Intent(NewGameActivity.this, GameActivity.class);
+                aboutIntent.putExtra("parameter", playerNameText.getText().toString());
                 startActivity(aboutIntent);
             }
         });
@@ -63,8 +64,8 @@ public class NewGameActivity extends AppCompatActivity {
         backBtn.setTextSize(18);
         backBtn.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         backBtn.setOnClickListener(view -> {
-                Intent aboutIntent = new Intent(NewGameActivity.this, StartActivity.class);
-                startActivity(aboutIntent);
+            Intent aboutIntent = new Intent(NewGameActivity.this, StartActivity.class);
+            startActivity(aboutIntent);
         });
 
     }
