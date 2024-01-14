@@ -11,7 +11,7 @@ public class GameModel {
                     "You stand in a dimly lit entrance hall. The air is thick with anticipation.",
                     "None",
                     "",
-                    "entrance_hall_image.png",
+                    "entrance_hall_image",
                     ""},
 
             {"Dark Corridor",

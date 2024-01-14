@@ -1,5 +1,7 @@
 package com.example.textadventuregame.model;
 
+import java.util.Stack;
+
 public class Player {
     private String name;
     private int level;
@@ -9,6 +11,7 @@ public class Player {
     private int shields;
     private int magic_attack;
     private Room location;
+    private Stack<Room> passedRooms;
 
     public Player(String name, Room startingLocation) { // initial constructor
         this.name = name;
@@ -19,6 +22,7 @@ public class Player {
         this.shields = 0;
         this.magic_attack = 2;
         this.location = startingLocation;
+        passedRooms = new Stack<>();
     }
 
 //    public Player(String name, int level, int hp, int phys_attack, int shields, int magic_attack, Room location) { // loading constructor
@@ -53,5 +57,9 @@ public class Player {
 
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    public Stack<Room> getPassedRooms() {
+        return passedRooms;
     }
 }

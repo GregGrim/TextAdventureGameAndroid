@@ -2,6 +2,7 @@ package com.example.textadventuregame.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,6 +28,10 @@ public class GameActivity extends AppCompatActivity {
     private ImageButton inventoryButton;
     private ImageButton levelUpButton;
     private Button eventButton;
+    private Button leftButton;
+    private Button rightButton;
+    private Button downButton;
+    private Button returnButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,27 @@ public class GameActivity extends AppCompatActivity {
         eventButton.setOnClickListener(view -> {
             // doEvent();
         });
+
+        rightButton = findViewById(R.id.rightBtn);
+        rightButton.setBackgroundColor(Color.GRAY);
+        rightButton.setTextSize(15);
+        rightButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        leftButton = findViewById(R.id.leftBtn);
+        leftButton.setBackgroundColor(Color.GRAY);
+        leftButton.setTextSize(15);
+        leftButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        downButton = findViewById(R.id.downstairsBtn);
+        downButton.setBackgroundColor(Color.GRAY);
+        downButton.setTextSize(15);
+        downButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        returnButton = findViewById(R.id.returnBackBtn);
+        returnButton.setBackgroundColor(Color.GRAY);
+        returnButton.setTextSize(15);
+        returnButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
     }
 
     private void renderScreen() {
@@ -91,6 +117,7 @@ public class GameActivity extends AppCompatActivity {
         renderInventoryImage();
         renderLevelUpButton();
         renderEventButton();
+        renderControlButtons();
     }
 
 
@@ -132,5 +159,22 @@ public class GameActivity extends AppCompatActivity {
             eventButton.setFocusable(false);
             eventButton.setVisibility(View.INVISIBLE);
         }
+    }
+    @SuppressLint("SetTextI18n")
+    private void renderControlButtons() {
+        if(gameController.getCurrentRoomID()==1){
+            returnButton.setText("Leave");
+            returnButton.setOnClickListener(view->{
+                Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
+                startActivity(aboutIntent);
+            });
+        } else {
+            returnButton.setText("Go Back");
+            returnButton.setOnClickListener(view->{
+                gameController.changeRoom(gameController.previousRoom());
+                renderScreen();
+            });
+        }
+
     }
 }

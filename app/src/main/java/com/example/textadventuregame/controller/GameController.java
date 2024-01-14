@@ -1,10 +1,12 @@
 package com.example.textadventuregame.controller;
 
 import com.example.textadventuregame.model.GameModel;
+import com.example.textadventuregame.model.Room;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class GameController {
     private GameModel gameModel;
@@ -41,6 +43,16 @@ public class GameController {
     }
     public String roomEventHandleText(){
         return gameModel.getPlayer().getLocation().getEventHandle();
+    }
+    public int getCurrentRoomID(){
+        return gameModel.getPlayer().getLocation().getId();
+    }
+
+    public void changeRoom(Room room) {
+        gameModel.getPlayer().setLocation(room);
+    }
+    public Room previousRoom() {
+        return gameModel.getPlayer().getPassedRooms().peek();
     }
 
     public List<File> listSavedGames() {
