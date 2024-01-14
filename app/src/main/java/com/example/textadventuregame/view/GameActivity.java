@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +22,11 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView locationImage;
     private TextView locationText;
-    private Button menuButton;
+    private TextView playerInfo;
+    private ImageButton menuButton;
+    private ImageButton inventoryButton;
+    private ImageButton levelUpButton;
+    private Button eventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +53,44 @@ public class GameActivity extends AppCompatActivity {
         locationImage = findViewById(R.id.locationImage);
 
         locationText = findViewById(R.id.locationInfo);
-        locationText.setText("");
         locationText.setTextSize(15);
         locationText.setTextColor(Color.WHITE);
-        menuButton.findViewById(R.id.menuBtn);
-        menuButton.setBackgroundColor(Color.GRAY);
-        menuButton.setTextSize(18);
-        menuButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        // TODO event listener
+        locationText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        menuButton = findViewById(R.id.menuBtn);
+        menuButton.setOnClickListener(view -> {
+            //showMenu();
+        });
+
+        playerInfo = findViewById(R.id.playerInfo);
+        playerInfo.setTextColor(Color.YELLOW);
+        playerInfo.setTextSize(15);
+        playerInfo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        inventoryButton = findViewById(R.id.inventoryBtn);
+        inventoryButton.setOnClickListener(view -> {
+            //openInventory();
+        });
+
+        levelUpButton = findViewById(R.id.levelUpBtn);
+        levelUpButton.setOnClickListener(view -> {
+            //levelUp();
+        });
+        eventButton = findViewById(R.id.eventBtn);
+        eventButton.setTextSize(15);
+        eventButton.setTextColor(Color.WHITE);
+        eventButton.setOnClickListener(view -> {
+            // doEvent();
+        });
     }
 
     private void renderScreen() {
         renderLocationImage();
         renderLocationText();
-
+        renderPlayerInfo();
+        renderInventoryImage();
+        renderLevelUpButton();
+        renderEventButton();
     }
 
 
@@ -73,5 +102,35 @@ public class GameActivity extends AppCompatActivity {
     }
     private void renderLocationText() {
         locationText.setText(gameController.getLocationText());
+    }
+    private void renderPlayerInfo() {
+          playerInfo.setText(gameController.getPlayerInfoText());
+    }
+    private void renderInventoryImage() {
+        inventoryButton.setImageResource(R.drawable.inventory_icon);
+    }
+    private void renderLevelUpButton() {
+        levelUpButton.setImageResource(R.drawable.levelup);
+        if(gameController.checkLevelUp()) {
+            levelUpButton.setEnabled(true);
+            levelUpButton.setFocusable(true);
+            levelUpButton.setVisibility(View.VISIBLE);
+        } else{
+            levelUpButton.setEnabled(false);
+            levelUpButton.setFocusable(false);
+            levelUpButton.setVisibility(View.INVISIBLE);
+        }
+    }
+    private void renderEventButton() {
+        if(gameController.roomWithEvent()) {
+            eventButton.setEnabled(true);
+            eventButton.setFocusable(true);
+            eventButton.setVisibility(View.VISIBLE);
+            eventButton.setText(gameController.roomEventHandleText());
+        } else{
+            eventButton.setEnabled(false);
+            eventButton.setFocusable(false);
+            eventButton.setVisibility(View.INVISIBLE);
+        }
     }
 }

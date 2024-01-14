@@ -28,6 +28,20 @@ public class GameController {
     public String getLocationText() {
         return gameModel.getPlayer().getLocation().getDescription();
     }
+    public String getPlayerInfoText() {
+        return gameModel.getPlayer().getPlayerInfo();
+    }
+    public boolean checkLevelUp() {
+        boolean levelUp = gameModel.getPlayer().getXp()>=5;
+        if(levelUp) gameModel.getPlayer().setXp(gameModel.getPlayer().getXp()-5);
+        return levelUp;
+    }
+    public boolean roomWithEvent(){
+        return gameModel.getPlayer().getLocation().hasEvent();
+    }
+    public String roomEventHandleText(){
+        return gameModel.getPlayer().getLocation().getEventHandle();
+    }
 
     public List<File> listSavedGames() {
         String directoryPath = "..\\saves";

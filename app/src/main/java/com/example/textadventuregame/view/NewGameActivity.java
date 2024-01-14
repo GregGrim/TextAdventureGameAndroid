@@ -2,6 +2,7 @@ package com.example.textadventuregame.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class NewGameActivity extends AppCompatActivity {
         setupControls();
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupControls() {
         ImageView gifImageView = findViewById(R.id.newGameGif);
         String gifUrl = "https://media.tenor.com/K7-ivtVTJ7YAAAAM/dnd-creature.gif";
@@ -40,6 +42,7 @@ public class NewGameActivity extends AppCompatActivity {
         playerNameText.setTextSize(18);
         playerNameText.setTextColor(Color.WHITE);
         playerNameText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        playerNameText.setText("player");
 
         startNewGame = findViewById(R.id.startGameBtn);
         startNewGame.setBackgroundColor(Color.GRAY);

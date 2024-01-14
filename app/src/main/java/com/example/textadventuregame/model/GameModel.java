@@ -2,39 +2,138 @@ package com.example.textadventuregame.model;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameModel {
     public static final String[][] ROOM_DATA = {
-            {"The Abyssal Entryway (Starting Room)", "A foreboding entrance to the dungeon.", "entryway.jpg"},
-            {"Cryptic Chamber", "A mysterious and dimly lit chamber.", "cryptic_chamber.jpg"},
-            {"Forsaken Alchemy Lab", "An abandoned lab filled with ancient alchemical apparatus.", "alchemy_lab.jpg"},
-            {"Shadowy Passageway", "A dark and winding passageway with lurking shadows.", "shadowy_passageway.jpg"},
-            {"Dim-lit Sanctum", "A quiet sanctum with a faint glow of eerie light.", "dim_lit_sanctum.jpg"},
-            {"Wyrm's Roost", "The lair of a slumbering wyrm, guarded by treasure.", "wyrms_roost.jpg"},
-            {"Eerie Catacombs", "Catacombs echoing with haunting whispers of the past.", "eerie_catacombs.jpg"},
-            {"Astral Nexus", "A room where magical energies converge in an astral nexus.", "astral_nexus.jpg"},
-            {"Plunderer's Hideout", "A hideout filled with stolen treasures and ill-gotten gains.", "plunderers_hideout.jpg"},
-            {"Nocturnal Ballroom", "A ballroom shrouded in darkness, frozen in a perpetual night.", "nocturnal_ballroom.jpg"},
-            {"Thorns and Shadows Den", "A den filled with thorns and shadows, a dangerous retreat.", "thorns_and_shadows_den.jpg"},
-            {"Gearworks Forge", "A forge where intricate gears and mechanisms are crafted.", "gearworks_forge.jpg"},
-            {"Eldritch Temple", "A temple resonating with ancient and eldritch power.", "eldritch_temple.jpg"},
-            {"Maze of Deception", "A maze designed to deceive and confound intruders.", "maze_of_deception.jpg"},
-            {"Magma-Forged Bastion", "A bastion forged in magma, standing as a formidable stronghold.", "magma_forged_bastion.jpg"}
+            {"Entrance Hall",
+                    "You stand in a dimly lit entrance hall. The air is thick with anticipation.",
+                    "None",
+                    "",
+                    "entrance_hall_image.png",
+                    ""},
+
+            {"Dark Corridor",
+                    "A dark and eerie corridor stretches ahead. You hear faint whispers in the shadows.",
+                    "Monster",
+                    "Defeat the lurking monster to proceed.",
+                    "dark_corridor_image",
+                    "Sword,MedKit"},
+
+            {"Treasure Room",
+                    "A room filled with glittering treasures. The air is filled with the scent of wealth.",
+                    "Treasure",
+                    "Claim the treasure for yourself.",
+                    "treasure_image",
+                    "MagicSword,Shield"},
+
+            {"Trap Room",
+                    "Watch your step! This room is filled with traps. The floor is suspiciously uneven.",
+                    "Trap",
+                    "Navigate the traps carefully.",
+                    "trap_image",
+                    ""},
+
+            {"Guardian Chamber",
+                    "A powerful guardian blocks your way. Its eyes glow with an otherworldly energy.",
+                    "Boss",
+                    "Defeat the guardian to access the next level.",
+                    "boss_image",
+                    "MedKit,Shield"},
+
+            {"Library of Ancient Tomes",
+                    "Rows of dusty tomes line the shelves. The knowledge of centuries is at your fingertips.",
+                    "None",
+                    "",
+                    "library_image",
+                    ""},
+
+            {"Enchanted Garden",
+                    "A magical garden filled with vibrant flowers. The air is infused with a sweet aroma.",
+                    "None",
+                    "",
+                    "garden_image",
+                    ""},
+
+            {"Forgotten Alchemy Lab",
+                    "Bubbling potions and ancient apparatuses fill the room. A mysterious concoction simmers.",
+                    "Potion",
+                    "Grab potions",
+                    "alchemy_lab_image",
+                    "Potion,Potion"},
+
+            {"Hall of Mirrors",
+                    "Mirrors reflect your image endlessly. It's disorienting, but there's something intriguing about it.",
+                    "None",
+                    "",
+                    "hall_of_mirrors_image",
+                    ""},
+
+            {"Crystal Cavern",
+                    "Glowing crystals illuminate the cavern. The walls sparkle with a mesmerizing radiance.",
+                    "None",
+                    "",
+                    "crystal_cavern_image",
+                    ""},
+
+            {"Chamber of Whispers",
+                    "The air is filled with ghostly whispers. You strain to hear the secrets hidden within.",
+                    "None",
+                    "",
+                    "whisper_chamber_image",
+                    ""},
+
+            {"Mystic Observatory",
+                    "Telescopes point to the cosmos. The mysteries of the universe unfold before your eyes.",
+                    "None",
+                    "",
+                    "observatory_image",
+                    ""},
+
+            {"Dragon's Lair",
+                    "A dragon slumbers on a pile of treasures. Approach with caution or seek to claim its hoard.",
+                    "Monster",
+                    "Decide whether to face the dragon or find another route.",
+                    "dragon_lair_image",
+                    "DragonBlade"},
+
+            {"Fountain of Youth",
+                    "A magical fountain stands in the center. Its waters are said to grant eternal youth.",
+                    "None",
+                    "",
+                    "fountain_image",
+                    ""},
+
+            {"Hall of Echoes",
+                    "Your footsteps echo through this vast hall. The sound is both haunting and oddly comforting.",
+                    "None",
+                    "",
+                    "hall_of_echoes_image",
+                    ""}
     };
     private Player player;
     private List<Room> rooms = new ArrayList<>();
     private Inventory inventory;
 
-
-
-
     public void createRooms(){
-        Room startingRoom = new Room(1,ROOM_DATA[0][0], ROOM_DATA[0][1], ROOM_DATA[0][2]);
+        Room startingRoom = new Room(1,
+                ROOM_DATA[0][0],
+                ROOM_DATA[0][1],
+                ROOM_DATA[0][2],
+                ROOM_DATA[0][3],
+                ROOM_DATA[0][4],
+                new ArrayList<>(Arrays.asList(ROOM_DATA[0][5].split(","))));
         rooms.add(startingRoom);
         for (int i = 2; i < 16; i++) {
             int randomID = (int) (Math.random() * (14)) + 1;
-            rooms.add(new Room(i, ROOM_DATA[randomID][0], ROOM_DATA[randomID][1], ROOM_DATA[randomID][2]));
+            rooms.add(new Room(i,
+                    ROOM_DATA[randomID][0],
+                    ROOM_DATA[randomID][1],
+                    ROOM_DATA[randomID][2],
+                    ROOM_DATA[randomID][3],
+                    ROOM_DATA[randomID][4],
+                    new ArrayList<>(Arrays.asList(ROOM_DATA[randomID][5].split(",")))));
         }
         generateMaze();
     }

@@ -1,5 +1,7 @@
 package com.example.textadventuregame.model;
 
+import com.example.textadventuregame.model.items.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 
