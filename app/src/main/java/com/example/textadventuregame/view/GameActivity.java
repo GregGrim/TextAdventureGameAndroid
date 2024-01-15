@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.textadventuregame.R;
 import com.example.textadventuregame.controller.GameController;
@@ -28,10 +29,10 @@ public class GameActivity extends AppCompatActivity {
     private ImageButton inventoryButton;
     private ImageButton levelUpButton;
     private Button eventButton;
-    private Button leftButton;
-    private Button rightButton;
-    private Button downButton;
-    private Button returnButton;
+    private Button westButton;
+    private Button eastButton;
+    private Button northButton;
+    private Button southButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,25 +89,29 @@ public class GameActivity extends AppCompatActivity {
             // doEvent();
         });
 
-        rightButton = findViewById(R.id.rightBtn);
-        rightButton.setBackgroundColor(Color.GRAY);
-        rightButton.setTextSize(15);
-        rightButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        eastButton = findViewById(R.id.rightBtn);
+        eastButton.setBackgroundColor(Color.GRAY);
+        eastButton.setTextSize(15);
+        eastButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-        leftButton = findViewById(R.id.leftBtn);
-        leftButton.setBackgroundColor(Color.GRAY);
-        leftButton.setTextSize(15);
-        leftButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-        downButton = findViewById(R.id.downstairsBtn);
-        downButton.setBackgroundColor(Color.GRAY);
-        downButton.setTextSize(15);
-        downButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        westButton = findViewById(R.id.leftBtn);
+        westButton.setBackgroundColor(Color.GRAY);
+        westButton.setTextSize(15);
+        westButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-        returnButton = findViewById(R.id.returnBackBtn);
-        returnButton.setBackgroundColor(Color.GRAY);
-        returnButton.setTextSize(15);
-        returnButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        northButton = findViewById(R.id.downstairsBtn);
+        northButton.setBackgroundColor(Color.GRAY);
+        northButton.setTextSize(15);
+        northButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+
+        southButton = findViewById(R.id.returnBackBtn);
+        southButton.setBackgroundColor(Color.GRAY);
+        southButton.setTextSize(15);
+        southButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
 
     }
 
@@ -150,31 +155,92 @@ public class GameActivity extends AppCompatActivity {
     }
     private void renderEventButton() {
         if(gameController.roomWithEvent()) {
-            eventButton.setEnabled(true);
-            eventButton.setFocusable(true);
-            eventButton.setVisibility(View.VISIBLE);
+            enableButton(eventButton);
+            eventButton.setBackgroundColor(0xFF3E0F0C);
             eventButton.setText(gameController.roomEventHandleText());
         } else{
-            eventButton.setEnabled(false);
-            eventButton.setFocusable(false);
-            eventButton.setVisibility(View.INVISIBLE);
+            disableButton(eventButton);
         }
     }
     @SuppressLint("SetTextI18n")
     private void renderControlButtons() {
-        if(gameController.getCurrentRoomID()==1){
-            returnButton.setText("Leave");
-            returnButton.setOnClickListener(view->{
-                Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
-                startActivity(aboutIntent);
-            });
-        } else {
-            returnButton.setText("Go Back");
-            returnButton.setOnClickListener(view->{
-                gameController.changeRoom(gameController.previousRoom());
-                renderScreen();
+        if(gameController.hasNorthNeighbor()) {
+            enableButton(northButton);
+            northButton.setOnClickListener(view->{
+                if(!gameController.getCurrentRoomEvent().equals("Monster")) {
+                    int[] currentLocation = gameController.getCurrentLocation();
+                    currentLocation[0] -= 1;
+                    gameController.changeLocation(currentLocation);
+                    renderScreen();
+                } else {
+                    Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                }
             });
         }
+        else disableButton(northButton);
+        if(gameController.hasSouthNeighbor()) {
+            enableButton(southButton);
+            if(gameController.isStartingLocation()){
+                southButton.setText("Leave");
+                southButton.setOnClickListener(view->{
+                    Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
+                    startActivity(aboutIntent);
+                    Toast.makeText(this, "You successfully left dungeon.", Toast.LENGTH_SHORT).show();
+                });
+            }else {
+                southButton.setText("Go South");
+                southButton.setOnClickListener(view->{
+                    if(!gameController.getCurrentRoomEvent().equals("Monster")) {
+                        int[] currentLocation = gameController.getCurrentLocation();
+                        currentLocation[0]+=1;
+                        gameController.changeLocation(currentLocation);
+                        renderScreen();
+                    } else {
+                        Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
+        }
+        else disableButton(southButton);
+        if(gameController.hasEastNeighbor()) {
+            enableButton(eastButton);
+            eastButton.setOnClickListener(view->{
+                if(!gameController.getCurrentRoomEvent().equals("Monster")) {
+                    int[] currentLocation = gameController.getCurrentLocation();
+                    currentLocation[1]+=1;
+                    gameController.changeLocation(currentLocation);
+                    renderScreen();
+                } else {
+                    Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else disableButton(eastButton);
+        if(gameController.hasWestNeighbor()) {
+            enableButton(westButton);
+            westButton.setOnClickListener(view->{
+                if(!gameController.getCurrentRoomEvent().equals("Monster")) {
+                    int[] currentLocation = gameController.getCurrentLocation();
+                    currentLocation[1]-=1;
+                    gameController.changeLocation(currentLocation);
+                    renderScreen();
+                }else {
+                    Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else disableButton(westButton);
+    }
+    private void enableButton(Button button){
+        button.setEnabled(true);
+        button.setFocusable(true);
+        button.setVisibility(View.VISIBLE);
+    }
+    private void disableButton(Button button) {
+        button.setEnabled(false);
+        button.setFocusable(false);
+        button.setVisibility(View.INVISIBLE);
+        button.setOnClickListener(view->{});
     }
 }

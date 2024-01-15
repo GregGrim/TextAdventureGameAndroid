@@ -1,17 +1,13 @@
 package com.example.textadventuregame.controller;
 
 import com.example.textadventuregame.model.GameModel;
-import com.example.textadventuregame.model.Room;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 public class GameController {
     private GameModel gameModel;
-
-
     public void createGameModel() {
         gameModel = new GameModel();
     }
@@ -19,16 +15,16 @@ public class GameController {
     public void gameStart(String playerName) {
         createGameModel();
         gameModel.createRooms();
-        gameModel.createPlayer(playerName, gameModel.getRooms().get(0)); // name entered by user
+        gameModel.createPlayer(playerName); // name entered by user
         gameModel.createInventory();
 
     }
 
     public String getLocationImageName() {
-        return gameModel.getPlayer().getLocation().getImage();
+        return gameModel.getCurrentRoomByLocation().getImage();
     }
     public String getLocationText() {
-        return gameModel.getPlayer().getLocation().getDescription();
+        return gameModel.getCurrentRoomByLocation().getDescription();
     }
     public String getPlayerInfoText() {
         return gameModel.getPlayer().getPlayerInfo();
@@ -39,20 +35,36 @@ public class GameController {
         return levelUp;
     }
     public boolean roomWithEvent(){
-        return gameModel.getPlayer().getLocation().hasEvent();
+        return gameModel.getCurrentRoomByLocation().hasEvent();
     }
     public String roomEventHandleText(){
-        return gameModel.getPlayer().getLocation().getEventHandle();
-    }
-    public int getCurrentRoomID(){
-        return gameModel.getPlayer().getLocation().getId();
+        return gameModel.getCurrentRoomByLocation().getEventHandle();
     }
 
-    public void changeRoom(Room room) {
-        gameModel.getPlayer().setLocation(room);
+    public void changeLocation(int[] newRoomLocation) {
+        gameModel.getPlayer().setLocation(newRoomLocation[0], newRoomLocation[1]);
     }
-    public Room previousRoom() {
-        return gameModel.getPlayer().getPassedRooms().peek();
+    public int[] getCurrentLocation() {
+        return gameModel.getPlayer().getLocation();
+    }
+    public boolean isStartingLocation(){
+        int [] location = getCurrentLocation();
+        return location[0]==15 && location[1]==15;
+    }
+    public String getCurrentRoomEvent(){
+        return gameModel.getCurrentRoomByLocation().getEvent();
+    }
+    public boolean hasNorthNeighbor(){
+        return gameModel.hasNorthNeighbor();
+    }
+    public boolean hasSouthNeighbor(){
+        return gameModel.hasSouthNeighbor();
+    }
+    public boolean hasWestNeighbor(){
+        return gameModel.hasWestNeighbor();
+    }
+    public boolean hasEastNeighbor(){
+        return gameModel.hasEastNeighbor();
     }
 
     public List<File> listSavedGames() {
@@ -65,6 +77,7 @@ public class GameController {
         }
         return null;
     }
+
 
 
 }

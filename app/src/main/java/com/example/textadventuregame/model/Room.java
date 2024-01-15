@@ -11,8 +11,6 @@ public class Room {
     private final String name;
     private String description;
     private String image;
-
-    private List<Room> connections;
     private boolean visited;
     private String event;
     private String eventHandle;
@@ -24,7 +22,6 @@ public class Room {
         this.description = description;
         this.image = image;
         this.visited = false;
-        connections = new ArrayList<>();
         this.event = event;
         this.eventHandle = eventHandle;
         if(!rewards.get(0).equals("")) {
@@ -51,23 +48,6 @@ public class Room {
         return id;
     }
 
-    public List<Room> getConnections() {
-        return connections;
-    }
-    public void addConnection(Room room) {
-        connections.add(room);
-    }
-    public String printConnections() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-        for (Room room : connections) {
-            builder.append(room.getId());
-            builder.append(" ");
-        }
-        builder.append("]");
-        return  builder.toString();
-    }
-
     public String getImage() {
         return image;
     }
@@ -81,5 +61,21 @@ public class Room {
     }
     public boolean hasEvent(){
         return !event.equals("None");
+    }
+
+    public String getEvent() {
+        return event;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final Room other = (Room) obj;
+        return id == other.getId();
     }
 }

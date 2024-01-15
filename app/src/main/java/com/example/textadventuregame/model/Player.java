@@ -1,19 +1,16 @@
 package com.example.textadventuregame.model;
 
-import java.util.Stack;
-
 public class Player {
-    private String name;
+    private final String name;
     private int level;
     private int hp;
     private int xp;
     private int phys_attack;
     private int shields;
     private int magic_attack;
-    private Room location;
-    private Stack<Room> passedRooms;
+    private int[] location;
 
-    public Player(String name, Room startingLocation) { // initial constructor
+    public Player(String name) { // initial constructor
         this.name = name;
         this.hp = 100;
         this.phys_attack = 2;
@@ -21,25 +18,15 @@ public class Player {
         this.xp = 0;
         this.shields = 0;
         this.magic_attack = 2;
-        this.location = startingLocation;
-        passedRooms = new Stack<>();
+        this.location = new int[] {15,15};
     }
 
-//    public Player(String name, int level, int hp, int phys_attack, int shields, int magic_attack, Room location) { // loading constructor
-//        this.name = name;
-//        this.level = level;
-//        this.hp = hp;
-//        this.phys_attack = phys_attack;
-//        this.shields = shields;
-//        this.magic_attack = magic_attack;
-//        this.location=location;
-//    }
-
-    public void setLocation(Room location) {
-        this.location = location;
+    public void setLocation(int y, int x) {
+        location[0] = y;
+        location[1] = x;
     }
 
-    public Room getLocation() {
+    public int[] getLocation() {
         return location;
     }
 
@@ -57,9 +44,5 @@ public class Player {
 
     public void setXp(int xp) {
         this.xp = xp;
-    }
-
-    public Stack<Room> getPassedRooms() {
-        return passedRooms;
     }
 }

@@ -37,7 +37,7 @@ public class GameModel {
 
             {"Guardian Chamber",
                     "A powerful guardian blocks your way. Its eyes glow with an otherworldly energy.",
-                    "Boss",
+                    "Monster",
                     "Defeat the guardian to access the next level.",
                     "boss_image",
                     "MedKit,Shield"},
@@ -114,6 +114,7 @@ public class GameModel {
     };
     private Player player;
     private List<Room> rooms = new ArrayList<>();
+    private int[][] map = new int[30][30];
     private Inventory inventory;
 
     public void createRooms(){
@@ -138,24 +139,39 @@ public class GameModel {
         generateMaze();
     }
     public void generateMaze(){
-        RoomConnectionsGenerator generator = new RoomConnectionsGenerator(rooms);
-        generator.generateRoomConnections();
-        rooms = generator.getRooms();
+        MapGenerator generator = new MapGenerator();
+        generator.generateMap();
+        map = generator.getMap();
     }
 
-    public void createPlayer(String name, Room startingLocation) {
-        player = new Player(name, startingLocation);
+    public void createPlayer(String name) {
+        player = new Player(name);
     }
 
     public void createInventory() {
         inventory = new Inventory();
     }
 
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
     public Player getPlayer() {
         return player;
+    }
+    public Room getCurrentRoomByLocation() {
+        int id = map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]];
+        for (Room room : rooms) {
+            if(room.getId()==id) return room;
+        }
+        return null;
+    }
+    public boolean hasNorthNeighbor(){
+        return map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=0;
+    }
+    public boolean hasSouthNeighbor(){
+        return map[getPlayer().getLocation()[0]+1][getPlayer().getLocation()[1]]!=0;
+    }
+    public boolean hasWestNeighbor(){
+        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]-1]!=0;
+    }
+    public boolean hasEastNeighbor(){
+        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]+1]!=0;
     }
 }
