@@ -1,6 +1,7 @@
 package com.example.textadventuregame.view;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,12 @@ public class InventoryRecyclerViewAdapter extends RecyclerView.Adapter<Inventory
 
     public void setSword(Item sword) {
         this.sword = sword;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setItems(List<Item> items) {
+        this.items = items;
+        notifyDataSetChanged();
     }
 
     @NonNull

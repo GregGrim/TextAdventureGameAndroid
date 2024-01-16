@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,9 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
     private ImageButton closeInventoryButton;
     private RecyclerView inventoryRecyclerview;
     private InventoryRecyclerViewAdapter adapter;
+    private LinearLayout linearLayoutBattleLog;
+    private ScrollView battleLogScrollView;
+    private ImageButton closeBattleLogButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +94,18 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         levelUpButton.setOnClickListener(view -> {
             //levelUp();
         });
+        linearLayoutBattleLog = findViewById(R.id.battleLogList);
+        linearLayoutBattleLog.setEnabled(false);
+        linearLayoutBattleLog.setVisibility(View.INVISIBLE);
+
+        battleLogScrollView = findViewById(R.id.battleLogScrollView);
+        battleLogScrollView.setEnabled(false);
+        battleLogScrollView.setVisibility(View.INVISIBLE);
+
         eventButton = findViewById(R.id.eventBtn);
         eventButton.setTextSize(15);
         eventButton.setTextColor(Color.WHITE);
-        eventButton.setOnClickListener(view -> {
-            // doEvent();
-        });
+
 
         eastButton = findViewById(R.id.rightBtn);
         eastButton.setBackgroundColor(Color.GRAY);
@@ -119,6 +130,20 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         southButton.setTextSize(15);
         southButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
+        closeBattleLogButton = findViewById(R.id.closeBattleLogBtn);
+        closeBattleLogButton.setEnabled(false);
+        closeBattleLogButton.setVisibility(View.INVISIBLE);
+        closeBattleLogButton.setOnClickListener(view->{
+            closeBattleLogButton.setEnabled(false);
+            closeBattleLogButton.setVisibility(View.INVISIBLE);
+            battleLogScrollView.setEnabled(false);
+            battleLogScrollView.setVisibility(View.INVISIBLE);
+            linearLayoutBattleLog.setEnabled(false);
+            linearLayoutBattleLog.setVisibility(View.INVISIBLE);
+            renderControlButtons();
+            inventoryButton.setEnabled(true);
+        });
+
         closeInventoryButton = findViewById(R.id.closeInventoryBtn);
         closeInventoryButton.setEnabled(false);
         closeInventoryButton.setVisibility(View.INVISIBLE);
@@ -140,6 +165,8 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         inventoryRecyclerview.setAdapter(adapter);
         inventoryRecyclerview.setLayoutManager(new LinearLayoutManager(this));
 
+        
+        
     }
 
     private void renderScreen() {
@@ -180,11 +207,44 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             levelUpButton.setVisibility(View.INVISIBLE);
         }
     }
+    @SuppressLint("NotifyDataSetChanged")
     private void renderEventButton() {
         if(gameController.roomWithEvent()) {
             enableButton(eventButton);
             eventButton.setBackgroundColor(0xFF3E0F0C);
             eventButton.setText(gameController.roomEventHandleText());
+            eventButton.setOnClickListener(view -> {
+                gameController.doEvent();
+                adapter.setItems(gameController.getInventoryItems());
+                if(!gameController.playerIsAlive()) {
+                    Intent aboutIntent = new Intent(GameActivity.this, GameOverActivity.class);
+                    startActivity(aboutIntent);
+                } else {
+                    if (gameController.roomEventHandleText().equals("FIGHT")) {
+                        inventoryButton.setEnabled(false);
+                        hideControlButtons();
+                        battleLogScrollView.setEnabled(true);
+                        battleLogScrollView.setVisibility(View.VISIBLE);
+                        linearLayoutBattleLog.setEnabled(true);
+                        linearLayoutBattleLog.setVisibility(View.VISIBLE);
+                        closeBattleLogButton.setEnabled(true);
+                        closeBattleLogButton.setVisibility(View.VISIBLE);
+                        for (String log : gameController.getBattleLog()) {
+                            TextView textView = new TextView(this);
+                            textView.setText(log);
+                            textView.setTextColor(Color.WHITE);
+                            textView.setTextSize(15);
+                            linearLayoutBattleLog.addView(textView);
+
+                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) textView.getLayoutParams();
+                            layoutParams.setMargins(0, 0, 0, 16);
+                            textView.setLayoutParams(layoutParams);
+                        }
+                    }
+                    renderPlayerInfo();
+                    disableButton(eventButton);
+                }
+            });
         } else{
             disableButton(eventButton);
         }
@@ -301,6 +361,10 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         } else {
             gameController.useOneTimeItem(gameController.getInventoryItems().get(position));
             adapter.notifyItemRemoved(position);
+            if(!gameController.playerIsAlive()) {
+                Intent aboutIntent = new Intent(GameActivity.this, GameOverActivity.class);
+                startActivity(aboutIntent);
+            }
         }
         renderPlayerInfo();
     }

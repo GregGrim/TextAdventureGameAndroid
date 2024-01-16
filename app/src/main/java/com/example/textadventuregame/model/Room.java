@@ -35,9 +35,9 @@ public class Room {
     }
     public static Item createItem(String className) {
         try {
-            Class<?> clazz = Class.forName("model.items." + className);
-            Constructor<?> ctor = clazz.getConstructor(String.class);
-            Object object = ctor.newInstance("");
+            Class<?> clazz = Class.forName("com.example.textadventuregame.model.items." + className);
+            Constructor<?> ctor = clazz.getConstructor();
+            Object object = ctor.newInstance();
             return (Item)object;
         } catch (Exception e){
             e.printStackTrace();
@@ -66,6 +66,19 @@ public class Room {
     public String getEvent() {
         return event;
     }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public List<Item> getEventRewards() {
+        return eventRewards;
+    }
+
+    public void setEventRewards(List<Item> eventRewards) {
+        this.eventRewards = eventRewards;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

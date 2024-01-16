@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TextAdventureGame"
         tools:targetApi="31">
         <activity
+            android:name=".view.GameOverActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.GameActivity"
             android:exported="false" />
         <activity

@@ -23,39 +23,39 @@ public class GameModel {
                     ""},
 
             {"Dark Corridor",
-                    "A dark and eerie corridor stretches ahead. You hear faint whispers in the shadows.",
+                    "A dark and eerie corridor stretches ahead. You hear faint whispers in the shadows. Defeat the lurking monster to proceed.",
                     "Monster",
-                    "Defeat the lurking monster to proceed.",
+                    "FIGHT",
                     "dark_corridor_image",
                     "Sword,MedKit"},
 
             {"Treasure Room",
                     "A room filled with glittering treasures. The air is filled with the scent of wealth.",
                     "Treasure",
-                    "Claim the treasure for yourself.",
+                    "COLLECT",
                     "treasure_image",
                     "MagicSword,Shield"},
 
             {"Trap Room",
-                    "Watch your step! This room is filled with traps. The floor is suspiciously uneven.",
+                    "Watch your step! This room is filled with traps. The floor is suspiciously uneven. Deactivate the traps if you are brave enough.",
                     "Trap",
-                    "Navigate the traps carefully.",
+                    "DEACTIVATE",
                     "trap_image",
                     ""},
 
             {"Guardian Chamber",
-                    "A powerful guardian blocks your way. Its eyes glow with an otherworldly energy.",
+                    "A powerful guardian blocks your way. Its eyes glow with an otherworldly energy. Defeat the guardian to access the next level.",
                     "Monster",
-                    "Defeat the guardian to access the next level.",
+                    "FIGHT",
                     "boss_image",
                     "MedKit,Shield"},
 
             {"Library of Ancient Tomes",
                     "Rows of dusty tomes line the shelves. The knowledge of centuries is at your fingertips.",
-                    "None",
-                    "",
+                    "Treasure",
+                    "COLLECT",
                     "library_image",
-                    ""},
+                    "MedKit"},
 
             {"Enchanted Garden",
                     "A magical garden filled with vibrant flowers. The air is infused with a sweet aroma.",
@@ -66,7 +66,7 @@ public class GameModel {
 
             {"Forgotten Alchemy Lab",
                     "Bubbling potions and ancient apparatuses fill the room. A mysterious concoction simmers.",
-                    "Potion",
+                    "Treasure",
                     "Grab potions",
                     "alchemy_lab_image",
                     "Potion,Potion"},
@@ -87,8 +87,8 @@ public class GameModel {
 
             {"Chamber of Whispers",
                     "The air is filled with ghostly whispers. You strain to hear the secrets hidden within.",
-                    "None",
-                    "",
+                    "Horror",
+                    "Listen to them",
                     "whisper_chamber_image",
                     ""},
 
@@ -100,16 +100,16 @@ public class GameModel {
                     ""},
 
             {"Dragon's Lair",
-                    "A dragon slumbers on a pile of treasures. Approach with caution or seek to claim its hoard.",
-                    "Monster",
-                    "Decide whether to face the dragon or find another route.",
+                    "A dragon slumbers on a pile of treasures. Approach with caution or seek to claim its hoard. Decide whether to face the dragon or find another route.",
+                    "Dragon",
+                    "FIGHT",
                     "dragon_lair_image",
                     "DragonBlade"},
 
             {"Fountain of Youth",
                     "A magical fountain stands in the center. Its waters are said to grant eternal youth.",
-                    "None",
-                    "",
+                    "Heal",
+                    "Drink water",
                     "fountain_image",
                     ""},
 
@@ -126,6 +126,7 @@ public class GameModel {
     private List<Item> inventory;
     private Item sword;
     private Shield shield;
+    private List<String> battleLog;
 
     public void createRooms(){
         Room startingRoom = new Room(1,
@@ -179,16 +180,19 @@ public class GameModel {
         return null;
     }
     public boolean hasNorthNeighbor(){
-        return map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=0;
+        return map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=0
+                && map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=-1;
     }
     public boolean hasSouthNeighbor(){
         return map[getPlayer().getLocation()[0]+1][getPlayer().getLocation()[1]]!=0;
     }
     public boolean hasWestNeighbor(){
-        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]-1]!=0;
+        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]-1]!=0
+                && map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=-1;
     }
     public boolean hasEastNeighbor(){
-        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]+1]!=0;
+        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]+1]!=0
+                && map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=-1;
     }
 
     public List<Item> getInventory() {
@@ -266,5 +270,104 @@ public class GameModel {
             } else player.setHp(player.getHp()-potion.getHp_decrease());
         }
         inventory.remove(item);
+    }
+    public void doEvent() {
+        if(getCurrentRoomByLocation().getEvent().equals("Monster")){
+            battleLog = new ArrayList<>();
+            int monsterHP = (int)(Math.random()*50)+70;
+            int monsterAttack = (int)(Math.random()*5)+1;
+            int monsterMagicAttack = (int)(Math.random()*5)+1;
+            int monsterShields = (int)(Math.random()*2)+1;
+            int playerPower = getPlayer().getPhys_attack()+(int)(0.5*getPlayer().getMagic_attack());
+            int playerDamage = playerPower-monsterShields;
+            int monsterPower = monsterAttack+(int)(0.5*monsterMagicAttack);
+            int monsterDamage = monsterPower-player.getShields();
+            while(getPlayer().getHp()>0 && monsterHP>0) {
+                monsterHP -= playerDamage;
+                String report = getPlayer().getName()+" attacked with power "
+                        + playerPower
+                        + " and dealt "+playerDamage
+                        +" damage. Monster HP="+monsterHP;
+                battleLog.add(report);
+                if(monsterHP<=0) {
+                    battleLog.add("victory");
+                    addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
+                    getCurrentRoomByLocation().setEvent("None");
+                    break;
+                }
+                player.setHp(player.getHp()-monsterDamage);
+                report = "Monster attacked with power "
+                        + monsterPower
+                        + "and dealt "+monsterDamage
+                        +". "+getPlayer().getName()+" HP="+getPlayer().getHp();
+                battleLog.add(report);
+            }
+            if (getPlayer().getHp()<=0) {
+                battleLog.add("defeat");
+                player.setAlive(false);
+            }
+        }
+        if(getCurrentRoomByLocation().getEvent().equals("Dragon")) {
+            battleLog = new ArrayList<>();
+            int dragonHP = (int) (Math.random() * 50) + 70;
+            int dragonAttack = (int) (Math.random() * 7) + 1;
+            int dragonMagicAttack = (int) (Math.random() * 5) + 1;
+            int dragonShields = (int) (Math.random() * 4) + 3;
+            int playerPower = getPlayer().getPhys_attack() + getPlayer().getMagic_attack();
+            int playerDamage = playerPower - dragonShields;
+            int dragonPower = dragonAttack + (int) (0.5 * dragonMagicAttack);
+            int dragonDamage = dragonPower - player.getShields();
+            while (getPlayer().getHp() > 0 && dragonHP > 0) {
+                dragonHP -= playerDamage;
+                String report = getPlayer().getName() + " attacked with power "
+                        + playerPower
+                        + " and dealt " + playerDamage
+                        + " damage. Dragon HP=" + dragonHP;
+                battleLog.add(report);
+                if (dragonHP <= 0) {
+                    battleLog.add("victory");
+                    addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
+                    getCurrentRoomByLocation().setEvent("None");
+                    break;
+                }
+                player.setHp(player.getHp() - dragonDamage);
+                report = "Monster attacked with power "
+                        + dragonPower
+                        + "and dealt " + dragonDamage
+                        + ". " + getPlayer().getName() + " HP=" + getPlayer().getHp();
+                battleLog.add(report);
+            }
+            if (getPlayer().getHp() <= 0) {
+                battleLog.add("defeat");
+                player.setAlive(false);
+            }
+        }
+
+        if(getCurrentRoomByLocation().getEvent().equals("Treasure")){
+            addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
+            getCurrentRoomByLocation().setEvent("None");
+        }
+        if(getCurrentRoomByLocation().getEvent().equals("Horror")){
+            player.setShields(Math.max(0, player.getShields()-1));
+            player.setPhys_attack(Math.max(1, player.getPhys_attack()-2));
+            player.setMagic_attack(Math.max(1, player.getMagic_attack()-1));
+            getCurrentRoomByLocation().setEvent("None");
+        }
+        if(getCurrentRoomByLocation().getEvent().equals("Heal")){
+            player.setHp(100);
+            getCurrentRoomByLocation().setEvent("None");
+        }
+        if(getCurrentRoomByLocation().getEvent().equals("Trap")){
+            player.setHp(Math.max(player.getHp()-(int)(Math.random()*30+10), 1));
+            getCurrentRoomByLocation().setEvent("None");
+        }
+    }
+    public List<String> getBattleLog() {
+        return battleLog;
+    }
+    public void addItemsToInventory(List<Item> items) {
+        List<Item> newInventory = new ArrayList<>(inventory);
+        newInventory.addAll(items);
+        inventory = newInventory;
     }
 }

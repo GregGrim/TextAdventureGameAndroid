@@ -87,6 +87,16 @@ public class GameController {
         gameModel.useOneTimeItem(item);
     }
 
+    public void doEvent() {
+        gameModel.doEvent();
+    }
+    public List<String> getBattleLog() {
+        return gameModel.getBattleLog();
+    }
+    public boolean playerIsAlive() {
+        return gameModel.getPlayer().isAlive();
+    }
+
     public List<File> listSavedGames() {
         String directoryPath = "..\\saves";
         File directory = new File(directoryPath);
