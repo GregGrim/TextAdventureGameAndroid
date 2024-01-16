@@ -26,7 +26,6 @@ import java.io.File;
 
 public class GameActivity extends AppCompatActivity implements RecyclerViewInterface{
     private GameController gameController;
-
     private ImageView locationImage;
     private TextView locationText;
     private TextView playerInfo;
@@ -86,9 +85,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         playerInfo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         inventoryButton = findViewById(R.id.inventoryBtn);
-        inventoryButton.setOnClickListener(view -> {
-            openInventory();
-        });
+        inventoryButton.setOnClickListener(view -> openInventory());
 
         levelUpButton = findViewById(R.id.levelUpBtn);
         levelUpButton.setOnClickListener(view -> {
@@ -167,9 +164,6 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
                 gameController.getEquippedSword(), gameController.getEquippedShield(), this);
         inventoryRecyclerview.setAdapter(adapter);
         inventoryRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-
-        
-        
     }
 
     private void renderScreen() {
