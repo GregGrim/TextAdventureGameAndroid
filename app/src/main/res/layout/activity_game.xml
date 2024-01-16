@@ -32,14 +32,14 @@
 
     <TextView
         android:id="@+id/locationInfo"
-        android:layout_width="209dp"
-        android:layout_height="187dp"
+        android:layout_width="210dp"
+        android:layout_height="134dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.455" />
+        app:layout_constraintVertical_bias="0.415" />
 
     <ImageButton
         android:id="@+id/inventoryBtn"
@@ -117,14 +117,14 @@
 
     <Button
         android:id="@+id/eventBtn"
-        android:layout_width="208dp"
-        android:layout_height="59dp"
+        android:layout_width="210dp"
+        android:layout_height="58dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.647" />
+        app:layout_constraintVertical_bias="0.567" />
 
     <ImageButton
         android:id="@+id/menuBtn"
@@ -142,8 +142,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inventoryRecyclerView"
-        android:layout_width="297dp"
-        android:layout_height="208dp"
+        android:layout_width="296dp"
+        android:layout_height="251dp"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -158,10 +158,10 @@
         android:background="#3E0F0C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.849"
+        app:layout_constraintHorizontal_bias="0.934"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73"
+        app:layout_constraintVertical_bias="0.669"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
