@@ -1,6 +1,14 @@
 package com.example.textadventuregame.model;
 
 
+import com.example.textadventuregame.model.items.DragonBlade;
+import com.example.textadventuregame.model.items.Item;
+import com.example.textadventuregame.model.items.MagicSword;
+import com.example.textadventuregame.model.items.MedKit;
+import com.example.textadventuregame.model.items.Potion;
+import com.example.textadventuregame.model.items.Shield;
+import com.example.textadventuregame.model.items.Sword;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -113,9 +121,9 @@ public class GameModel {
                     ""}
     };
     private Player player;
-    private List<Room> rooms = new ArrayList<>();
+    private final List<Room> rooms = new ArrayList<>();
     private int[][] map = new int[30][30];
-    private Inventory inventory;
+    private List<Item> inventory;
 
     public void createRooms(){
         Room startingRoom = new Room(1,
@@ -149,7 +157,13 @@ public class GameModel {
     }
 
     public void createInventory() {
-        inventory = new Inventory();
+        inventory = new ArrayList<>();
+        inventory.add(new MedKit());
+        inventory.add(new Potion());
+        inventory.add(new DragonBlade());
+        inventory.add(new MagicSword());
+        inventory.add(new Sword());
+        inventory.add(new Shield());
     }
 
     public Player getPlayer() {
@@ -173,5 +187,9 @@ public class GameModel {
     }
     public boolean hasEastNeighbor(){
         return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]+1]!=0;
+    }
+
+    public List<Item> getInventory() {
+        return inventory;
     }
 }

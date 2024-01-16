@@ -1,6 +1,7 @@
 package com.example.textadventuregame.controller;
 
 import com.example.textadventuregame.model.GameModel;
+import com.example.textadventuregame.model.items.Item;
 
 import java.io.File;
 import java.util.Arrays;
@@ -65,6 +66,9 @@ public class GameController {
     }
     public boolean hasEastNeighbor(){
         return gameModel.hasEastNeighbor();
+    }
+    public List<Item> getInventoryItems() {
+        return gameModel.getInventory();
     }
 
     public List<File> listSavedGames() {

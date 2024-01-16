@@ -140,4 +140,28 @@
         app:layout_constraintVertical_bias="0.023"
         app:srcCompat="@android:drawable/ic_menu_save" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inventoryRecyclerView"
+        android:layout_width="297dp"
+        android:layout_height="208dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.967" />
+
+    <ImageButton
+        android:id="@+id/closeInventoryBtn"
+        android:layout_width="32dp"
+        android:layout_height="38dp"
+        android:background="#3E0F0C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.849"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.73"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

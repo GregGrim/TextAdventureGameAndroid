@@ -1,6 +1,8 @@
 package com.example.textadventuregame.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -33,6 +35,9 @@ public class GameActivity extends AppCompatActivity {
     private Button eastButton;
     private Button northButton;
     private Button southButton;
+
+    private ImageButton closeInventoryButton;
+    private RecyclerView inventoryRecyclerview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +80,7 @@ public class GameActivity extends AppCompatActivity {
 
         inventoryButton = findViewById(R.id.inventoryBtn);
         inventoryButton.setOnClickListener(view -> {
-            //openInventory();
+            openInventory();
         });
 
         levelUpButton = findViewById(R.id.levelUpBtn);
@@ -112,6 +117,25 @@ public class GameActivity extends AppCompatActivity {
         southButton.setTextSize(15);
         southButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
+        closeInventoryButton = findViewById(R.id.closeInventoryBtn);
+        closeInventoryButton.setEnabled(false);
+        closeInventoryButton.setVisibility(View.INVISIBLE);
+        closeInventoryButton.setOnClickListener(view->{
+            closeInventoryButton.setEnabled(false);
+            closeInventoryButton.setVisibility(View.INVISIBLE);
+            inventoryRecyclerview.setEnabled(false);
+            inventoryRecyclerview.setVisibility(View.INVISIBLE);
+            renderControlButtons();
+        });
+
+        inventoryRecyclerview = findViewById(R.id.inventoryRecyclerView);
+        inventoryRecyclerview.setVisibility(View.INVISIBLE);
+        inventoryRecyclerview.setEnabled(false);
+
+        InventoryRecyclerViewAdapter adapter = new InventoryRecyclerViewAdapter(this,
+                gameController.getInventoryItems());
+        inventoryRecyclerview.setAdapter(adapter);
+        inventoryRecyclerview.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -242,5 +266,18 @@ public class GameActivity extends AppCompatActivity {
         button.setFocusable(false);
         button.setVisibility(View.INVISIBLE);
         button.setOnClickListener(view->{});
+    }
+    private void openInventory() {
+        hideControlButtons();
+        closeInventoryButton.setEnabled(true);
+        closeInventoryButton.setVisibility(View.VISIBLE);
+        inventoryRecyclerview.setEnabled(true);
+        inventoryRecyclerview.setVisibility(View.VISIBLE);
+    }
+    private void hideControlButtons(){
+        disableButton(northButton);
+        disableButton(southButton);
+        disableButton(eastButton);
+        disableButton(westButton);
     }
 }
