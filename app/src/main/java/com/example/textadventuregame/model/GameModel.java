@@ -292,6 +292,7 @@ public class GameModel {
                 if(monsterHP<=0) {
                     battleLog.add("victory");
                     addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
+                    player.setXp(player.getXp()+(int)(Math.random()*3)+3);
                     getCurrentRoomByLocation().setEvent("None");
                     break;
                 }
@@ -327,6 +328,7 @@ public class GameModel {
                 if (dragonHP <= 0) {
                     battleLog.add("victory");
                     addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
+                    player.setXp(player.getXp()+(int)(Math.random()*3)+3);
                     getCurrentRoomByLocation().setEvent("None");
                     break;
                 }

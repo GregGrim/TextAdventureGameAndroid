@@ -87,4 +87,12 @@ public class Player {
     public void setShields(int shields) {
         this.shields = shields;
     }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 }

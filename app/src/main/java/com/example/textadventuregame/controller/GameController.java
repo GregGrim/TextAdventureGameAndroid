@@ -96,6 +96,12 @@ public class GameController {
     public boolean playerIsAlive() {
         return gameModel.getPlayer().isAlive();
     }
+    public void levelUp() {
+        gameModel.getPlayer().setMagic_attack(gameModel.getPlayer().getMagic_attack()+2);
+        gameModel.getPlayer().setPhys_attack(gameModel.getPlayer().getPhys_attack()+2);
+        gameModel.getPlayer().setShields(gameModel.getPlayer().getShields()+2);
+        gameModel.getPlayer().setLevel(gameModel.getPlayer().getLevel()+1);
+    }
 
     public List<File> listSavedGames() {
         String directoryPath = "..\\saves";

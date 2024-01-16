@@ -92,7 +92,9 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
 
         levelUpButton = findViewById(R.id.levelUpBtn);
         levelUpButton.setOnClickListener(view -> {
-            //levelUp();
+            gameController.levelUp();
+            renderLevelUpButton();
+            renderPlayerInfo();
         });
         linearLayoutBattleLog = findViewById(R.id.battleLogList);
         linearLayoutBattleLog.setEnabled(false);
@@ -153,6 +155,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             inventoryRecyclerview.setEnabled(false);
             inventoryRecyclerview.setVisibility(View.INVISIBLE);
             renderControlButtons();
+            eventButton.setEnabled(true);
         });
 
         inventoryRecyclerview = findViewById(R.id.inventoryRecyclerView);
@@ -207,7 +210,6 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             levelUpButton.setVisibility(View.INVISIBLE);
         }
     }
-    @SuppressLint("NotifyDataSetChanged")
     private void renderEventButton() {
         if(gameController.roomWithEvent()) {
             enableButton(eventButton);
@@ -242,6 +244,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
                         }
                     }
                     renderPlayerInfo();
+                    renderLevelUpButton();
                     disableButton(eventButton);
                 }
             });
@@ -332,6 +335,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
     }
     private void openInventory() {
         hideControlButtons();
+        eventButton.setEnabled(false);
         closeInventoryButton.setEnabled(true);
         closeInventoryButton.setVisibility(View.VISIBLE);
         inventoryRecyclerview.setEnabled(true);
