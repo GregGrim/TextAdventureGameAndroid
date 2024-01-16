@@ -6,6 +6,7 @@ public class Potion extends Item{
     private String name;
     private String imageFileName;
     public Potion(){
+        super();
         magic_power_bonus = (int)(Math.random()*5)+1;
         hp_decrease = (int)(Math.random()*20)+1;
         this.name = "Potion";

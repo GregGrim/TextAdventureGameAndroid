@@ -18,10 +18,11 @@ import android.widget.Toast;
 import com.example.textadventuregame.R;
 import com.example.textadventuregame.controller.GameController;
 import com.example.textadventuregame.controller.SaveLoadManager;
+import com.example.textadventuregame.model.items.Shield;
 
 import java.io.File;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements RecyclerViewInterface{
     private GameController gameController;
 
     private ImageView locationImage;
@@ -38,6 +39,7 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageButton closeInventoryButton;
     private RecyclerView inventoryRecyclerview;
+    private InventoryRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +134,9 @@ public class GameActivity extends AppCompatActivity {
         inventoryRecyclerview.setVisibility(View.INVISIBLE);
         inventoryRecyclerview.setEnabled(false);
 
-        InventoryRecyclerViewAdapter adapter = new InventoryRecyclerViewAdapter(this,
-                gameController.getInventoryItems());
+        adapter = new InventoryRecyclerViewAdapter(this,
+                gameController.getInventoryItems(),
+                gameController.getEquippedSword(), gameController.getEquippedShield(), this);
         inventoryRecyclerview.setAdapter(adapter);
         inventoryRecyclerview.setLayoutManager(new LinearLayoutManager(this));
 
@@ -279,5 +282,26 @@ public class GameActivity extends AppCompatActivity {
         disableButton(southButton);
         disableButton(eastButton);
         disableButton(westButton);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onItemClick(int position) {
+        String itemName = gameController.getInventoryItems().get(position).getName();
+        if(itemName.equals("Sword")
+                || itemName.equals("Magic Sword")
+                || itemName.equals("Dragon Blade")){
+            gameController.equipSword(gameController.getInventoryItems().get(position));
+            adapter.setSword(gameController.getInventoryItems().get(position));
+            adapter.notifyDataSetChanged();
+        } else if(itemName.equals("Shield")){
+            gameController.equipShield((Shield) gameController.getInventoryItems().get(position));
+            adapter.setShield((Shield) gameController.getInventoryItems().get(position));
+            adapter.notifyDataSetChanged();
+        } else {
+            gameController.useOneTimeItem(gameController.getInventoryItems().get(position));
+            adapter.notifyItemRemoved(position);
+        }
+        renderPlayerInfo();
     }
 }

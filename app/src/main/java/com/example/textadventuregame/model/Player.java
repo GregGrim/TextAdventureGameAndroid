@@ -9,6 +9,7 @@ public class Player {
     private int shields;
     private int magic_attack;
     private int[] location;
+    private boolean isAlive;
 
     public Player(String name) { // initial constructor
         this.name = name;
@@ -19,6 +20,7 @@ public class Player {
         this.shields = 0;
         this.magic_attack = 2;
         this.location = new int[] {15,15};
+        this.isAlive = true;
     }
 
     public void setLocation(int y, int x) {
@@ -44,5 +46,45 @@ public class Player {
 
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public void setMagic_attack(int magic_attack) {
+        this.magic_attack = magic_attack;
+    }
+
+    public int getMagic_attack() {
+        return magic_attack;
+    }
+
+    public int getPhys_attack() {
+        return phys_attack;
+    }
+
+    public void setPhys_attack(int phys_attack) {
+        this.phys_attack = phys_attack;
+    }
+
+    public int getShields() {
+        return shields;
+    }
+
+    public void setShields(int shields) {
+        this.shields = shields;
     }
 }

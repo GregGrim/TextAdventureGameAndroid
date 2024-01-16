@@ -5,6 +5,7 @@ public class Shield extends Item {
     private String name;
     private String imageFileName;
     public Shield(){
+        super();
         shields_power_bonus = (int)(Math.random()*5)+1;
         this.name="Shield";
         this.imageFileName="shield_image";

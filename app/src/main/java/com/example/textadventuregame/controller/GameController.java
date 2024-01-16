@@ -2,6 +2,7 @@ package com.example.textadventuregame.controller;
 
 import com.example.textadventuregame.model.GameModel;
 import com.example.textadventuregame.model.items.Item;
+import com.example.textadventuregame.model.items.Shield;
 
 import java.io.File;
 import java.util.Arrays;
@@ -69,6 +70,21 @@ public class GameController {
     }
     public List<Item> getInventoryItems() {
         return gameModel.getInventory();
+    }
+    public Item getEquippedSword() {
+        return gameModel.getSword();
+    }
+    public Shield getEquippedShield() {
+        return gameModel.getShield();
+    }
+    public void equipSword(Item sword) {
+        gameModel.setSword(sword);
+    }
+    public void equipShield(Shield shield) {
+        gameModel.setShield(shield);
+    }
+    public void useOneTimeItem(Item item) {
+        gameModel.useOneTimeItem(item);
     }
 
     public List<File> listSavedGames() {

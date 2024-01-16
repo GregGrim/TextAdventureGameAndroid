@@ -1,12 +1,11 @@
 package com.example.textadventuregame.model.items;
 
-import com.example.textadventuregame.model.items.Item;
-
 public class Sword extends Item {
     private int phys_power_bonus;
     private String name;
     private String imageFileName;
     public Sword(){
+        super();
         phys_power_bonus = (int)(Math.random()*5)+1;
         this.name = "Sword";
         this.imageFileName = "sword_image";

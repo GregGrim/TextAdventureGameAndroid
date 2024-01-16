@@ -5,6 +5,7 @@ public class MedKit extends Item {
     private String name;
     private String imageFileName;
     public MedKit() {
+        super();
         hp_restore = ((int)(Math.random()*9)+1)*10;
         this.name= "Med Kit";
         this.imageFileName = "medkit_image";

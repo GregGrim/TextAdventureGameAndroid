@@ -6,6 +6,7 @@ public class MagicSword extends Item{
     private String name;
     private String imageFileName;
     public MagicSword(){
+        super();
         phys_power_bonus = (int)(Math.random()*3)+1;
         magic_power_bonus = (int)(Math.random()*5)+3;
         this.name = "Magic Sword";

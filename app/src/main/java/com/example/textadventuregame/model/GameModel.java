@@ -124,6 +124,8 @@ public class GameModel {
     private final List<Room> rooms = new ArrayList<>();
     private int[][] map = new int[30][30];
     private List<Item> inventory;
+    private Item sword;
+    private Shield shield;
 
     public void createRooms(){
         Room startingRoom = new Room(1,
@@ -191,5 +193,78 @@ public class GameModel {
 
     public List<Item> getInventory() {
         return inventory;
+    }
+
+    public Item getSword() {
+        return sword;
+    }
+
+    public Shield getShield() {
+        return shield;
+    }
+
+    public void setSword(Item sword) {
+        if (this.sword!=null) {
+            switch (this.sword.getName()) {
+                case "Sword": {
+                    Sword swoord = (Sword) this.sword;
+                    getPlayer().setPhys_attack(getPlayer().getPhys_attack() - swoord.getPhys_power_bonus());
+                    break;
+                }
+                case "Magic Sword": {
+                    MagicSword swoord = (MagicSword) this.sword;
+                    getPlayer().setPhys_attack(getPlayer().getPhys_attack() - swoord.getPhys_power_bonus());
+                    getPlayer().setMagic_attack(getPlayer().getMagic_attack() - swoord.getMagic_power_bonus());
+                    break;
+                }
+                case "Dragon Blade": {
+                    DragonBlade swoord = (DragonBlade) this.sword;
+                    getPlayer().setPhys_attack(getPlayer().getPhys_attack() - swoord.getPhys_power_bonus());
+                    break;
+                }
+            }
+        }
+        this.sword = sword;
+        switch (this.sword.getName()) {
+            case "Sword": {
+                Sword swoord = (Sword) this.sword;
+                getPlayer().setPhys_attack(getPlayer().getPhys_attack() + swoord.getPhys_power_bonus());
+                break;
+            }
+            case "Magic Sword": {
+                MagicSword swoord = (MagicSword) this.sword;
+                getPlayer().setPhys_attack(getPlayer().getPhys_attack() + swoord.getPhys_power_bonus());
+                getPlayer().setMagic_attack(getPlayer().getMagic_attack() + swoord.getMagic_power_bonus());
+                break;
+            }
+            case "Dragon Blade": {
+                DragonBlade swoord = (DragonBlade) this.sword;
+                getPlayer().setPhys_attack(getPlayer().getPhys_attack() + swoord.getPhys_power_bonus());
+                break;
+            }
+        }
+
+    }
+
+    public void setShield(Shield shield) {
+        if (this.shield!=null) {
+            getPlayer().setShields(getPlayer().getShields()-shield.getShields_power_bonus());
+        }
+        this.shield = shield;
+        getPlayer().setShields(getPlayer().getShields()+shield.getShields_power_bonus());
+    }
+
+    public void useOneTimeItem(Item item) {
+        if (item.getName().equals("Med Kit")) {
+            MedKit medKit = (MedKit) item;
+            player.setHp(Math.min(player.getHp() + medKit.getHp_restore(), 100));
+        }else if (item.getName().equals("Potion")) {
+            Potion potion = (Potion) item;
+            player.setMagic_attack(player.getMagic_attack()+potion.getMagic_power_bonus());
+            if(player.getHp()-potion.getHp_decrease()<=0){
+                player.setAlive(false);
+            } else player.setHp(player.getHp()-potion.getHp_decrease());
+        }
+        inventory.remove(item);
     }
 }

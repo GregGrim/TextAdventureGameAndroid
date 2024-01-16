@@ -6,6 +6,7 @@ public class DragonBlade extends Item{
     private String imageFileName;
 
     public DragonBlade(){
+        super();
         phys_power_bonus = (int)(Math.random()*5)+10;
         this.name = "Dragon Blade";
         this.imageFileName = "dragon_blade_image";
