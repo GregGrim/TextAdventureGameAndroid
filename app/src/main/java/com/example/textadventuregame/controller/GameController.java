@@ -113,7 +113,18 @@ public class GameController {
         }
         return null;
     }
-
+    public List<Integer> getPassedRooms() {
+        return gameModel.getPassedRooms();
+    }
+    public boolean isInPassedRooms(Integer i) {
+        return gameModel.isInPassedRooms(i);
+    }
+    public int getLocationID() {
+        return gameModel.getCurrentRoomByLocation().getId();
+    }
+    public String getEventName() {
+        return gameModel.getCurrentRoomByLocation().getEvent();
+    }
 
 
 }

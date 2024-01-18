@@ -248,73 +248,74 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
     }
     @SuppressLint("SetTextI18n")
     private void renderControlButtons() {
-        if(gameController.hasNorthNeighbor()) {
-            enableButton(northButton);
-            northButton.setOnClickListener(view->{
-                if(!gameController.getCurrentRoomEvent().equals("Monster")) {
-                    int[] currentLocation = gameController.getCurrentLocation();
-                    currentLocation[0] -= 1;
-                    gameController.changeLocation(currentLocation);
-                    renderScreen();
-                } else {
-                    Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        else disableButton(northButton);
-        if(gameController.hasSouthNeighbor()) {
-            enableButton(southButton);
-            if(gameController.isStartingLocation()){
-                southButton.setText("Leave");
-                southButton.setOnClickListener(view->{
-                    Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
-                    startActivity(aboutIntent);
-                    Toast.makeText(this, "You successfully left dungeon.", Toast.LENGTH_SHORT).show();
-                });
-            }else {
-                southButton.setText("Go South");
-                southButton.setOnClickListener(view->{
-                    if(!gameController.getCurrentRoomEvent().equals("Monster")) {
+        if (checkVictoryCondition()) {
+            Intent aboutIntent = new Intent(GameActivity.this, GameWonActivity.class);
+            startActivity(aboutIntent);
+        } else {
+            if (gameController.hasNorthNeighbor()) {
+                enableButton(northButton);
+                northButton.setOnClickListener(view -> {
+                    if (!gameController.getCurrentRoomEvent().equals("Monster")) {
                         int[] currentLocation = gameController.getCurrentLocation();
-                        currentLocation[0]+=1;
+                        currentLocation[0] -= 1;
                         gameController.changeLocation(currentLocation);
                         renderScreen();
                     } else {
                         Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-
-        }
-        else disableButton(southButton);
-        if(gameController.hasEastNeighbor()) {
-            enableButton(eastButton);
-            eastButton.setOnClickListener(view->{
-                if(!gameController.getCurrentRoomEvent().equals("Monster")) {
-                    int[] currentLocation = gameController.getCurrentLocation();
-                    currentLocation[1]+=1;
-                    gameController.changeLocation(currentLocation);
-                    renderScreen();
+            } else disableButton(northButton);
+            if (gameController.hasSouthNeighbor()) {
+                enableButton(southButton);
+                if (gameController.isStartingLocation()) {
+                    southButton.setText("Leave");
+                    southButton.setOnClickListener(view -> {
+                        Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
+                        startActivity(aboutIntent);
+                        Toast.makeText(this, "You successfully left dungeon.", Toast.LENGTH_SHORT).show();
+                    });
                 } else {
-                    Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                    southButton.setText("Go South");
+                    southButton.setOnClickListener(view -> {
+                        if (!gameController.getCurrentRoomEvent().equals("Monster")) {
+                            int[] currentLocation = gameController.getCurrentLocation();
+                            currentLocation[0] += 1;
+                            gameController.changeLocation(currentLocation);
+                            renderScreen();
+                        } else {
+                            Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-            });
+            }
+            else disableButton(southButton);
+            if (gameController.hasEastNeighbor()) {
+                enableButton(eastButton);
+                eastButton.setOnClickListener(view -> {
+                    if (!gameController.getCurrentRoomEvent().equals("Monster")) {
+                        int[] currentLocation = gameController.getCurrentLocation();
+                        currentLocation[1] += 1;
+                        gameController.changeLocation(currentLocation);
+                        renderScreen();
+                    } else {
+                        Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else disableButton(eastButton);
+            if (gameController.hasWestNeighbor()) {
+                enableButton(westButton);
+                westButton.setOnClickListener(view -> {
+                    if (!gameController.getCurrentRoomEvent().equals("Monster")) {
+                        int[] currentLocation = gameController.getCurrentLocation();
+                        currentLocation[1] -= 1;
+                        gameController.changeLocation(currentLocation);
+                        renderScreen();
+                    } else {
+                        Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else disableButton(westButton);
         }
-        else disableButton(eastButton);
-        if(gameController.hasWestNeighbor()) {
-            enableButton(westButton);
-            westButton.setOnClickListener(view->{
-                if(!gameController.getCurrentRoomEvent().equals("Monster")) {
-                    int[] currentLocation = gameController.getCurrentLocation();
-                    currentLocation[1]-=1;
-                    gameController.changeLocation(currentLocation);
-                    renderScreen();
-                }else {
-                    Toast.makeText(this, "Monster on the way!!!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        else disableButton(westButton);
     }
     private void enableButton(Button button){
         button.setEnabled(true);
@@ -365,5 +366,13 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             }
         }
         renderPlayerInfo();
+    }
+    public boolean checkVictoryCondition() {
+        if(!gameController.getEventName().equals("Monster")
+                &&!gameController.roomEventHandleText().equals("Dragon")
+                && !gameController.isInPassedRooms(gameController.getLocationID())){
+            gameController.getPassedRooms().add(gameController.getLocationID());
+        }
+        return gameController.getPassedRooms().size() >= 15;
     }
 }

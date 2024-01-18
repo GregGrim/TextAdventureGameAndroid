@@ -29,10 +29,12 @@ public class MapGenerator {
         int id = 15;
         map[15][15] = 1;
         map[16][15] = -1;
-        while (!id_array.isEmpty()) {
+        int n = 0;
+        while (n<14) {
             Direction newDirection = chooseRandomDirection();
             if (map[currentRoomXY[0] + newDirection.y][currentRoomXY[1] + newDirection.x] == 0) {
                 map[currentRoomXY[0] + newDirection.y][currentRoomXY[1] + newDirection.x] = id;
+                n++;
                 if (numberOfNeighbors(currentRoomXY) == 4) {
                     currentRoomXY[0] = currentRoomXY[0] + newDirection.y;
                     currentRoomXY[1] = currentRoomXY[1] + newDirection.x;
@@ -40,11 +42,17 @@ public class MapGenerator {
                     currentRoomXY[0] = currentRoomXY[0] + newDirection.y;
                     currentRoomXY[1] = currentRoomXY[1] + newDirection.x;
                 }
-                Collections.shuffle(id_array);
-                id = id_array.get(0);
-                id_array.remove(0);
+
+                if(!id_array.isEmpty()) {
+                    Collections.shuffle(id_array);
+                    id = id_array.get(0);
+                    id_array.remove(0);
+                }
             }
         }
+//        for (int[] row : map) {
+//            System.out.println(Arrays.toString(row));
+//        }
     }
 
     private Direction chooseRandomDirection() {

@@ -127,25 +127,17 @@ public class GameModel {
     private Item sword;
     private Shield shield;
     private List<String> battleLog;
+    private final List<Integer> passedRooms = new ArrayList<>();
 
     public void createRooms(){
-        Room startingRoom = new Room(1,
-                ROOM_DATA[0][0],
-                ROOM_DATA[0][1],
-                ROOM_DATA[0][2],
-                ROOM_DATA[0][3],
-                ROOM_DATA[0][4],
-                new ArrayList<>(Arrays.asList(ROOM_DATA[0][5].split(","))));
-        rooms.add(startingRoom);
-        for (int i = 2; i < 16; i++) {
-            int randomID = (int) (Math.random() * (14)) + 1;
-            rooms.add(new Room(i,
-                    ROOM_DATA[randomID][0],
-                    ROOM_DATA[randomID][1],
-                    ROOM_DATA[randomID][2],
-                    ROOM_DATA[randomID][3],
-                    ROOM_DATA[randomID][4],
-                    new ArrayList<>(Arrays.asList(ROOM_DATA[randomID][5].split(",")))));
+        for (int i = 0; i < 15; i++) {
+            rooms.add(new Room(i+1,
+                    ROOM_DATA[i][0],
+                    ROOM_DATA[i][1],
+                    ROOM_DATA[i][2],
+                    ROOM_DATA[i][3],
+                    ROOM_DATA[i][4],
+                    new ArrayList<>(Arrays.asList(ROOM_DATA[i][5].split(",")))));
         }
         generateMaze();
     }
@@ -180,19 +172,16 @@ public class GameModel {
         return null;
     }
     public boolean hasNorthNeighbor(){
-        return map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=0
-                && map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=-1;
+        return map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]>0;
     }
     public boolean hasSouthNeighbor(){
         return map[getPlayer().getLocation()[0]+1][getPlayer().getLocation()[1]]!=0;
     }
     public boolean hasWestNeighbor(){
-        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]-1]!=0
-                && map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=-1;
+        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]-1]>0;
     }
     public boolean hasEastNeighbor(){
-        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]+1]!=0
-                && map[getPlayer().getLocation()[0]-1][getPlayer().getLocation()[1]]!=-1;
+        return map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]+1]>0;
     }
 
     public List<Item> getInventory() {
@@ -275,8 +264,8 @@ public class GameModel {
         if(getCurrentRoomByLocation().getEvent().equals("Monster")){
             battleLog = new ArrayList<>();
             int monsterHP = (int)(Math.random()*50)+70;
-            int monsterAttack = (int)(Math.random()*5)+1;
-            int monsterMagicAttack = (int)(Math.random()*5)+1;
+            int monsterAttack = (int)(Math.random()*5)+5;
+            int monsterMagicAttack = (int)(Math.random()*5)+2;
             int monsterShields = (int)(Math.random()*2)+1;
             int playerPower = getPlayer().getPhys_attack()+(int)(0.5*getPlayer().getMagic_attack());
             int playerDamage = playerPower-monsterShields;
@@ -311,7 +300,7 @@ public class GameModel {
         if(getCurrentRoomByLocation().getEvent().equals("Dragon")) {
             battleLog = new ArrayList<>();
             int dragonHP = (int) (Math.random() * 50) + 70;
-            int dragonAttack = (int) (Math.random() * 7) + 1;
+            int dragonAttack = (int) (Math.random() * 7) + 5;
             int dragonMagicAttack = (int) (Math.random() * 5) + 1;
             int dragonShields = (int) (Math.random() * 4) + 3;
             int playerPower = getPlayer().getPhys_attack() + getPlayer().getMagic_attack();
@@ -371,5 +360,12 @@ public class GameModel {
         List<Item> newInventory = new ArrayList<>(inventory);
         newInventory.addAll(items);
         inventory = newInventory;
+    }
+
+    public List<Integer> getPassedRooms() {
+        return passedRooms;
+    }
+    public boolean isInPassedRooms(Integer i) {
+        return passedRooms.contains(i);
     }
 }
