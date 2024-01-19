@@ -1,9 +1,22 @@
 package com.example.textadventuregame.model.items;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.io.Serializable;
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DragonBlade.class, name = "DragonBlade"),
+        @JsonSubTypes.Type(value = MagicSword.class, name = "MagicSword"),
+        @JsonSubTypes.Type(value = MedKit.class, name = "MedKit"),
+        @JsonSubTypes.Type(value = Potion.class, name = "Potion"),
+        @JsonSubTypes.Type(value = Shield.class, name = "Shield"),
+        @JsonSubTypes.Type(value = Sword.class, name = "Sword")}
+)
 
 public abstract class Item {
     @JacksonXmlProperty

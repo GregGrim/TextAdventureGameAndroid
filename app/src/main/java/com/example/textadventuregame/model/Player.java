@@ -4,9 +4,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable{
     @JacksonXmlProperty
-    private final String name;
+    private String name;
     @JacksonXmlProperty
     private int level;
     @JacksonXmlProperty
@@ -35,6 +35,7 @@ public class Player {
         this.location = new int[] {15,15};
         this.isAlive = true;
     }
+    public Player(){}
 
     public void setLocation(int y, int x) {
         location[0] = y;
@@ -48,7 +49,7 @@ public class Player {
     public String getName() {
         return name;
     }
-    public String getPlayerInfo(){
+    public String PlayerInfo(){
         return "HP:"+ this.hp+"  "+"LVL:"+ this.level+"  "+"XP:"+ this.xp+"/5\n"+
                 "PA:"+ this.phys_attack+"  "+"MA:"+ this.magic_attack+"  "+"SD:"+ this.shields;
     }

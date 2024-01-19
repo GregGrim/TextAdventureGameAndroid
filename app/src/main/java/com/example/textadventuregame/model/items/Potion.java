@@ -1,6 +1,8 @@
 package com.example.textadventuregame.model.items;
 
-public class Potion extends Item{
+import java.io.Serializable;
+
+public class Potion extends Item implements Serializable {
     private int magic_power_bonus;
     private int hp_decrease;
     private String name;

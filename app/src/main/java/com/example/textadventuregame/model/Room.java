@@ -9,11 +9,11 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room {
+public class Room implements Serializable{
     @JacksonXmlProperty
-    private final int id;
+    private int id;
     @JacksonXmlProperty
-    private final String name;
+    private String name;
     @JacksonXmlProperty
     private String description;
     @JacksonXmlProperty
@@ -45,6 +45,7 @@ public class Room {
             this.eventRewards=null;
         }
     }
+    public Room(){}
     public static Item createItem(String className) {
         try {
             Class<?> clazz = Class.forName("com.example.textadventuregame.model.items." + className);

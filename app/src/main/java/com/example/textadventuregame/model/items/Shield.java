@@ -2,6 +2,8 @@ package com.example.textadventuregame.model.items;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.io.Serializable;
+
 public class Shield extends Item {
     @JacksonXmlProperty
     private int shields_power_bonus;

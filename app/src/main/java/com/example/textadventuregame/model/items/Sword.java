@@ -1,6 +1,8 @@
 package com.example.textadventuregame.model.items;
 
-public class Sword extends Item {
+import java.io.Serializable;
+
+public class Sword extends Item implements Serializable {
     private int phys_power_bonus;
     private String name;
     private String imageFileName;

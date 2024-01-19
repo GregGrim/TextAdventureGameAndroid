@@ -10,6 +10,10 @@ import com.example.textadventuregame.model.items.MedKit;
 import com.example.textadventuregame.model.items.Potion;
 import com.example.textadventuregame.model.items.Shield;
 import com.example.textadventuregame.model.items.Sword;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.*;
 
 import java.io.Serializable;
@@ -24,13 +28,17 @@ public class GameModel implements Serializable {
     @JacksonXmlProperty(localName = "Room")
     private final List<Room> rooms = new ArrayList<>();
     @JacksonXmlProperty(localName = "Map")
+    @JsonSerialize(using = TwoDArrayXmlSerializer.class)
+    @JsonDeserialize(using = TwoDArrayXmlDeserializer.class)
     private int[][] map = new int[30][30];
     @JacksonXmlElementWrapper(localName = "Inventory")
     @JacksonXmlProperty(localName = "Item")
     private List<Item> inventory = new ArrayList<>();
     @JacksonXmlProperty(localName = "Sword")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Item sword;
     @JacksonXmlProperty(localName = "Shield")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Shield shield;
     @JacksonXmlElementWrapper(localName = "BattleLog")
     @JacksonXmlProperty(localName = "LogEntry")
@@ -77,7 +85,7 @@ public class GameModel implements Serializable {
         return player;
     }
 
-    public Room getCurrentRoomByLocation() {
+    public Room currentRoomByLocation() {
         int id = map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]];
         for (Room room : rooms) {
             if(room.getId()==id) return room;
@@ -174,7 +182,7 @@ public class GameModel implements Serializable {
         inventory.remove(item);
     }
     public void doEvent() {
-        if(getCurrentRoomByLocation().getEvent().equals("Monster")){
+        if(currentRoomByLocation().getEvent().equals("Monster")){
             battleLog = new ArrayList<>();
             int monsterHP = (int)(Math.random()*50)+70;
             int monsterAttack = (int)(Math.random()*5)+5;
@@ -193,9 +201,9 @@ public class GameModel implements Serializable {
                 battleLog.add(report);
                 if(monsterHP<=0) {
                     battleLog.add("victory");
-                    addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
+                    addItemsToInventory(currentRoomByLocation().getEventRewards());
                     player.setXp(player.getXp()+(int)(Math.random()*3)+3);
-                    getCurrentRoomByLocation().setEvent("None");
+                    currentRoomByLocation().setEvent("None");
                     break;
                 }
                 player.setHp(player.getHp()-monsterDamage);
@@ -210,7 +218,7 @@ public class GameModel implements Serializable {
                 player.setAlive(false);
             }
         }
-        if(getCurrentRoomByLocation().getEvent().equals("Dragon")) {
+        if(currentRoomByLocation().getEvent().equals("Dragon")) {
             battleLog = new ArrayList<>();
             int dragonHP = (int) (Math.random() * 50) + 70;
             int dragonAttack = (int) (Math.random() * 7) + 5;
@@ -229,9 +237,9 @@ public class GameModel implements Serializable {
                 battleLog.add(report);
                 if (dragonHP <= 0) {
                     battleLog.add("victory");
-                    addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
+                    addItemsToInventory(currentRoomByLocation().getEventRewards());
                     player.setXp(player.getXp()+(int)(Math.random()*3)+3);
-                    getCurrentRoomByLocation().setEvent("None");
+                    currentRoomByLocation().setEvent("None");
                     break;
                 }
                 player.setHp(player.getHp() - dragonDamage);
@@ -247,23 +255,23 @@ public class GameModel implements Serializable {
             }
         }
 
-        if(getCurrentRoomByLocation().getEvent().equals("Treasure")){
-            addItemsToInventory(getCurrentRoomByLocation().getEventRewards());
-            getCurrentRoomByLocation().setEvent("None");
+        if(currentRoomByLocation().getEvent().equals("Treasure")){
+            addItemsToInventory(currentRoomByLocation().getEventRewards());
+            currentRoomByLocation().setEvent("None");
         }
-        if(getCurrentRoomByLocation().getEvent().equals("Horror")){
+        if(currentRoomByLocation().getEvent().equals("Horror")){
             player.setShields(Math.max(0, player.getShields()-1));
             player.setPhys_attack(Math.max(1, player.getPhys_attack()-2));
             player.setMagic_attack(Math.max(1, player.getMagic_attack()-1));
-            getCurrentRoomByLocation().setEvent("None");
+            currentRoomByLocation().setEvent("None");
         }
-        if(getCurrentRoomByLocation().getEvent().equals("Heal")){
+        if(currentRoomByLocation().getEvent().equals("Heal")){
             player.setHp(100);
-            getCurrentRoomByLocation().setEvent("None");
+            currentRoomByLocation().setEvent("None");
         }
-        if(getCurrentRoomByLocation().getEvent().equals("Trap")){
+        if(currentRoomByLocation().getEvent().equals("Trap")){
             player.setHp(Math.max(player.getHp()-(int)(Math.random()*30+10), 1));
-            getCurrentRoomByLocation().setEvent("None");
+            currentRoomByLocation().setEvent("None");
         }
     }
     public List<String> getBattleLog() {

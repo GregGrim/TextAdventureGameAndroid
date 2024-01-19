@@ -2,6 +2,8 @@ package com.example.textadventuregame.controller;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.example.textadventuregame.model.*;
 import com.example.textadventuregame.model.items.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -28,13 +30,13 @@ public class GameController {
     }
 
     public String getLocationImageName() {
-        return gameModel.getCurrentRoomByLocation().getImage();
+        return gameModel.currentRoomByLocation().getImage();
     }
     public String getLocationText() {
-        return gameModel.getCurrentRoomByLocation().getDescription();
+        return gameModel.currentRoomByLocation().getDescription();
     }
     public String getPlayerInfoText() {
-        return gameModel.getPlayer().getPlayerInfo();
+        return gameModel.getPlayer().PlayerInfo();
     }
     public boolean checkLevelUp() {
         boolean levelUp = gameModel.getPlayer().getXp()>=5;
@@ -42,10 +44,10 @@ public class GameController {
         return levelUp;
     }
     public boolean roomWithEvent(){
-        return gameModel.getCurrentRoomByLocation().hasEvent();
+        return gameModel.currentRoomByLocation().hasEvent();
     }
     public String roomEventHandleText(){
-        return gameModel.getCurrentRoomByLocation().getEventHandle();
+        return gameModel.currentRoomByLocation().getEventHandle();
     }
 
     public void changeLocation(int[] newRoomLocation) {
@@ -59,7 +61,7 @@ public class GameController {
         return location[0]==15 && location[1]==15;
     }
     public String getCurrentRoomEvent(){
-        return gameModel.getCurrentRoomByLocation().getEvent();
+        return gameModel.currentRoomByLocation().getEvent();
     }
     public boolean hasNorthNeighbor(){
         return gameModel.hasNorthNeighbor();
@@ -114,10 +116,10 @@ public class GameController {
         return gameModel.isInPassedRooms(i);
     }
     public int getLocationID() {
-        return gameModel.getCurrentRoomByLocation().getId();
+        return gameModel.currentRoomByLocation().getId();
     }
     public String getEventName() {
-        return gameModel.getCurrentRoomByLocation().getEvent();
+        return gameModel.currentRoomByLocation().getEvent();
     }
     public void saveGame(Context ctx) {
         try {
@@ -127,6 +129,11 @@ public class GameController {
             File file = new File(filesDir+"/"+ gameModel.getPlayer().getName() + ".xml");
             XmlMapper xmlMapper = new XmlMapper();
             xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+            // test
+//            TestClass testClass = new TestClass();
+//            testClass.setName("testclassname");
+//            testClass.setPlayer(new Player("playerName"));;
             xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file,gameModel);
             System.out.println("Game saved successfully!");
         } catch (Exception e) {
@@ -139,12 +146,45 @@ public class GameController {
             System.out.println(file.getAbsoluteFile());
             XmlMapper xmlMapper = new XmlMapper();
             xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+
+            //test
+//            TestClass testClass = xmlMapper.readValue(file, TestClass.class);
+//            System.out.println(testClass);
             GameModel gameData = xmlMapper.readValue(file, GameModel.class);
 
             System.out.println("Game loaded successfully!");
             gameModel = gameData;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    private class TestClass {
+        private String name;
+        private Player player;
+        public TestClass() {
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setPlayer(Player player) {
+            this.player = player;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "name: "+this.name+" player:"+this.player;
         }
     }
 }
