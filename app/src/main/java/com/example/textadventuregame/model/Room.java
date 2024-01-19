@@ -1,19 +1,31 @@
 package com.example.textadventuregame.model;
 
 import com.example.textadventuregame.model.items.Item;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
+    @JacksonXmlProperty
     private final int id;
+    @JacksonXmlProperty
     private final String name;
+    @JacksonXmlProperty
     private String description;
+    @JacksonXmlProperty
     private String image;
+    @JacksonXmlProperty
     private boolean visited;
+    @JacksonXmlProperty
     private String event;
+    @JacksonXmlProperty
     private String eventHandle;
+    @JacksonXmlElementWrapper(localName = "EventRewards")
+    @JacksonXmlProperty(localName = "Item")
     private List<Item> eventRewards;
 
     public Room(int id, String name, String description, String event,String eventHandle,String image, List<String> rewards) {

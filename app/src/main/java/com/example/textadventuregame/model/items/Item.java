@@ -1,11 +1,14 @@
 package com.example.textadventuregame.model.items;
 
-import androidx.annotation.Nullable;
 
-import com.example.textadventuregame.model.Room;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
+import java.io.Serializable;
 
 public abstract class Item {
+    @JacksonXmlProperty
     private String name;
+    @JacksonXmlProperty
     private String imageFileName;
     static int ID = 0;
     final int id;

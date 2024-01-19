@@ -1,6 +1,8 @@
 package com.example.textadventuregame.model;
 
 
+import static com.example.textadventuregame.model.RoomData.ROOM_DATA;
+
 import com.example.textadventuregame.model.items.DragonBlade;
 import com.example.textadventuregame.model.items.Item;
 import com.example.textadventuregame.model.items.MagicSword;
@@ -8,126 +10,36 @@ import com.example.textadventuregame.model.items.MedKit;
 import com.example.textadventuregame.model.items.Potion;
 import com.example.textadventuregame.model.items.Shield;
 import com.example.textadventuregame.model.items.Sword;
+import com.fasterxml.jackson.dataformat.xml.annotation.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GameModel {
-    public static final String[][] ROOM_DATA = {
-            {"Entrance Hall",
-                    "You stand in a dimly lit entrance hall. The air is thick with anticipation.",
-                    "None",
-                    "",
-                    "entrance_hall_image",
-                    ""},
-
-            {"Dark Corridor",
-                    "A dark and eerie corridor stretches ahead. You hear faint whispers in the shadows. Defeat the lurking monster to proceed.",
-                    "Monster",
-                    "FIGHT",
-                    "dark_corridor_image",
-                    "Sword,MedKit"},
-
-            {"Treasure Room",
-                    "A room filled with glittering treasures. The air is filled with the scent of wealth.",
-                    "Treasure",
-                    "COLLECT",
-                    "treasure_image",
-                    "MagicSword,Shield"},
-
-            {"Trap Room",
-                    "Watch your step! This room is filled with traps. The floor is suspiciously uneven. Deactivate the traps if you are brave enough.",
-                    "Trap",
-                    "DEACTIVATE",
-                    "trap_image",
-                    ""},
-
-            {"Guardian Chamber",
-                    "A powerful guardian blocks your way. Its eyes glow with an otherworldly energy. Defeat the guardian to access the next level.",
-                    "Monster",
-                    "FIGHT",
-                    "boss_image",
-                    "MedKit,Shield"},
-
-            {"Library of Ancient Tomes",
-                    "Rows of dusty tomes line the shelves. The knowledge of centuries is at your fingertips.",
-                    "Treasure",
-                    "COLLECT",
-                    "library_image",
-                    "MedKit"},
-
-            {"Enchanted Garden",
-                    "A magical garden filled with vibrant flowers. The air is infused with a sweet aroma.",
-                    "None",
-                    "",
-                    "garden_image",
-                    ""},
-
-            {"Forgotten Alchemy Lab",
-                    "Bubbling potions and ancient apparatuses fill the room. A mysterious concoction simmers.",
-                    "Treasure",
-                    "Grab potions",
-                    "alchemy_lab_image",
-                    "Potion,Potion"},
-
-            {"Hall of Mirrors",
-                    "Mirrors reflect your image endlessly. It's disorienting, but there's something intriguing about it.",
-                    "None",
-                    "",
-                    "hall_of_mirrors_image",
-                    ""},
-
-            {"Crystal Cavern",
-                    "Glowing crystals illuminate the cavern. The walls sparkle with a mesmerizing radiance.",
-                    "None",
-                    "",
-                    "crystal_cavern_image",
-                    ""},
-
-            {"Chamber of Whispers",
-                    "The air is filled with ghostly whispers. You strain to hear the secrets hidden within.",
-                    "Horror",
-                    "Listen to them",
-                    "whisper_chamber_image",
-                    ""},
-
-            {"Mystic Observatory",
-                    "Telescopes point to the cosmos. The mysteries of the universe unfold before your eyes.",
-                    "None",
-                    "",
-                    "observatory_image",
-                    ""},
-
-            {"Dragon's Lair",
-                    "A dragon slumbers on a pile of treasures. Approach with caution or seek to claim its hoard. Decide whether to face the dragon or find another route.",
-                    "Dragon",
-                    "FIGHT",
-                    "dragon_lair_image",
-                    "DragonBlade"},
-
-            {"Fountain of Youth",
-                    "A magical fountain stands in the center. Its waters are said to grant eternal youth.",
-                    "Heal",
-                    "Drink water",
-                    "fountain_image",
-                    ""},
-
-            {"Hall of Echoes",
-                    "Your footsteps echo through this vast hall. The sound is both haunting and oddly comforting.",
-                    "None",
-                    "",
-                    "hall_of_echoes_image",
-                    ""}
-    };
+public class GameModel implements Serializable {
+    @JacksonXmlProperty(localName = "Player")
     private Player player;
+    @JacksonXmlElementWrapper(localName = "Rooms")
+    @JacksonXmlProperty(localName = "Room")
     private final List<Room> rooms = new ArrayList<>();
+    @JacksonXmlProperty(localName = "Map")
     private int[][] map = new int[30][30];
-    private List<Item> inventory;
+    @JacksonXmlElementWrapper(localName = "Inventory")
+    @JacksonXmlProperty(localName = "Item")
+    private List<Item> inventory = new ArrayList<>();
+    @JacksonXmlProperty(localName = "Sword")
     private Item sword;
+    @JacksonXmlProperty(localName = "Shield")
     private Shield shield;
+    @JacksonXmlElementWrapper(localName = "BattleLog")
+    @JacksonXmlProperty(localName = "LogEntry")
     private List<String> battleLog;
+    @JacksonXmlElementWrapper(localName = "PassedRooms")
+    @JacksonXmlProperty(localName = "RoomNumber")
     private final List<Integer> passedRooms = new ArrayList<>();
+    public GameModel() {
+    }
 
     public void createRooms(){
         for (int i = 0; i < 15; i++) {
@@ -164,6 +76,7 @@ public class GameModel {
     public Player getPlayer() {
         return player;
     }
+
     public Room getCurrentRoomByLocation() {
         int id = map[getPlayer().getLocation()[0]][getPlayer().getLocation()[1]];
         for (Room room : rooms) {

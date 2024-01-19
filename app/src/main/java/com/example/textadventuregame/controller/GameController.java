@@ -1,14 +1,19 @@
 package com.example.textadventuregame.controller;
 
-import com.example.textadventuregame.model.GameModel;
-import com.example.textadventuregame.model.items.Item;
-import com.example.textadventuregame.model.items.Shield;
+import android.content.Context;
+
+import com.example.textadventuregame.model.*;
+import com.example.textadventuregame.model.items.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameController {
+    @JacksonXmlProperty
     private GameModel gameModel;
     public void createGameModel() {
         gameModel = new GameModel();
@@ -102,17 +107,6 @@ public class GameController {
         gameModel.getPlayer().setShields(gameModel.getPlayer().getShields()+2);
         gameModel.getPlayer().setLevel(gameModel.getPlayer().getLevel()+1);
     }
-
-    public List<File> listSavedGames() {
-        String directoryPath = "..\\saves";
-        File directory = new File(directoryPath);
-        if (directory.isDirectory()) {
-            return Arrays.asList(directory.listFiles());
-        } else {
-            System.out.println("Provided path is not a directory.");
-        }
-        return null;
-    }
     public List<Integer> getPassedRooms() {
         return gameModel.getPassedRooms();
     }
@@ -125,6 +119,32 @@ public class GameController {
     public String getEventName() {
         return gameModel.getCurrentRoomByLocation().getEvent();
     }
+    public void saveGame(Context ctx) {
+        try {
+            System.out.println(gameModel.getPlayer().getName() + ".xml");
+            final File filesDir = ctx.getFilesDir();
 
+            File file = new File(filesDir+"/"+ gameModel.getPlayer().getName() + ".xml");
+            XmlMapper xmlMapper = new XmlMapper();
+            xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+            xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file,gameModel);
+            System.out.println("Game saved successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void loadGame(File file) {
+        try {
+            String fileName = file.getName();
+            System.out.println(file.getAbsoluteFile());
+            XmlMapper xmlMapper = new XmlMapper();
+            xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+            GameModel gameData = xmlMapper.readValue(file, GameModel.class);
 
+            System.out.println("Game loaded successfully!");
+            gameModel = gameData;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

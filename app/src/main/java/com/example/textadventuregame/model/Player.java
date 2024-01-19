@@ -1,14 +1,27 @@
 package com.example.textadventuregame.model;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
+import java.io.Serializable;
+
 public class Player {
+    @JacksonXmlProperty
     private final String name;
+    @JacksonXmlProperty
     private int level;
+    @JacksonXmlProperty
     private int hp;
+    @JacksonXmlProperty
     private int xp;
+    @JacksonXmlProperty
     private int phys_attack;
+    @JacksonXmlProperty
     private int shields;
+    @JacksonXmlProperty
     private int magic_attack;
+    @JacksonXmlProperty
     private int[] location;
+    @JacksonXmlProperty
     private boolean isAlive;
 
     public Player(String name) { // initial constructor

@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.textadventuregame.R;
 import com.example.textadventuregame.controller.GameController;
-import com.example.textadventuregame.controller.SaveLoadManager;
 import com.example.textadventuregame.model.items.Shield;
 
 import java.io.File;
@@ -44,13 +43,16 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
     private LinearLayout linearLayoutBattleLog;
     private ScrollView battleLogScrollView;
     private ImageButton closeBattleLogButton;
+    private Button saveGameButton;
+    private Button saveGameAndExitButton;
+    private Button menuExitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         Intent intent = getIntent();
-        Object parameter = intent.getStringExtra("parameter");
+        Object parameter = intent.getSerializableExtra("parameter");
         initData(parameter);
         setupControls();
         renderScreen();
@@ -62,7 +64,8 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             gameController.createGameModel();
             gameController.gameStart((String) obj);
         } else if(obj.getClass().equals(File.class)){
-            SaveLoadManager.loadGame(((File) obj).getName());
+            gameController = new GameController();
+            gameController.loadGame((File) obj);
         }
     }
 
@@ -75,9 +78,22 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         locationText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         menuButton = findViewById(R.id.menuBtn);
-        menuButton.setOnClickListener(view -> {
-            //showMenu();
-        });
+        saveGameButton = findViewById(R.id.saveGameButton);
+        saveGameButton.setBackgroundColor(Color.GRAY);
+        saveGameButton.setTextSize(15);
+        saveGameButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        disableButton(saveGameButton);
+        saveGameAndExitButton = findViewById(R.id.saveGameAndExitButton);
+        saveGameAndExitButton.setBackgroundColor(Color.GRAY);
+        saveGameAndExitButton.setTextSize(15);
+        saveGameAndExitButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        disableButton(saveGameAndExitButton);
+        menuExitButton = findViewById(R.id.menuExitButton);
+        menuExitButton.setBackgroundColor(Color.GRAY);
+        menuExitButton.setTextSize(15);
+        menuExitButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        disableButton(menuExitButton);
+        menuButtonAction();
 
         playerInfo = findViewById(R.id.playerInfo);
         playerInfo.setTextColor(Color.YELLOW);
@@ -374,5 +390,37 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             gameController.getPassedRooms().add(gameController.getLocationID());
         }
         return gameController.getPassedRooms().size() >= 15;
+    }
+    public void menuButtonAction() {
+        menuButton.setOnClickListener(view -> {
+            showMenu();
+            menuButton.setOnClickListener(v->{
+                disableButton(saveGameButton);
+                disableButton(saveGameAndExitButton);
+                disableButton(menuExitButton);
+                menuButtonAction();
+            });
+        });
+    }
+    public void showMenu() {
+        enableButton(saveGameButton);
+        saveGameButton.setOnClickListener(view->{
+            gameController.saveGame(this);
+            disableButton(saveGameButton);
+            disableButton(saveGameAndExitButton);
+            disableButton(menuExitButton);
+            menuButtonAction();
+        });
+        enableButton(saveGameAndExitButton);
+        saveGameAndExitButton.setOnClickListener(view->{
+            gameController.saveGame(this);
+            Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
+            startActivity(aboutIntent);
+        });
+        enableButton(menuExitButton);
+        menuExitButton.setOnClickListener(view->{
+            Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
+            startActivity(aboutIntent);
+        });
     }
 }

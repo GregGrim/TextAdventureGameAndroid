@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     id("com.android.application")
 }
@@ -26,12 +28,18 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    packagingOptions  {
+        resources.excludes.add("META-INF/NOTICE.md")
+        resources.excludes.add("META-INF/LICENSE.md")
+    }
 }
 
 dependencies {
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.1");
     implementation ("com.github.bumptech.glide:glide:4.12.0")
-    implementation ("javax.xml.stream:stax-api:1.0-2")
-    implementation ("javax.xml.bind:jaxb-api:2.3.1")
+    implementation ("javax.xml.stream:stax-api:1.0-2"){
+        exclude(group = "javax.xml.stream", module = "stax-api")
+    }
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
