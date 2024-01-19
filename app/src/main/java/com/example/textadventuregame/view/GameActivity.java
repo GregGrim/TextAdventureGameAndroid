@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import java.io.File;
 
 public class GameActivity extends AppCompatActivity implements RecyclerViewInterface{
     private GameController gameController;
+    private MediaPlayer mediaPlayer;
     private ImageView locationImage;
     private TextView locationText;
     private TextView playerInfo;
@@ -70,6 +72,11 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
     }
 
     private void setupControls() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.gamewindow);
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(mp -> mediaPlayer.start());
+
+
         locationImage = findViewById(R.id.locationImage);
 
         locationText = findViewById(R.id.locationInfo);
@@ -231,6 +238,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
                 if(!gameController.playerIsAlive()) {
                     Intent aboutIntent = new Intent(GameActivity.this, GameOverActivity.class);
                     startActivity(aboutIntent);
+                    stopMusic();
                 } else {
                     if (gameController.roomEventHandleText().equals("FIGHT")) {
                         inventoryButton.setEnabled(false);
@@ -252,6 +260,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
                             layoutParams.setMargins(0, 0, 0, 16);
                             textView.setLayoutParams(layoutParams);
                         }
+                        Toast.makeText(this, "You found something interesting!", Toast.LENGTH_SHORT).show();
                     }
                     renderPlayerInfo();
                     renderLevelUpButton();
@@ -267,6 +276,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         if (checkVictoryCondition()) {
             Intent aboutIntent = new Intent(GameActivity.this, GameWonActivity.class);
             startActivity(aboutIntent);
+            stopMusic();
         } else {
             if (gameController.hasNorthNeighbor()) {
                 enableButton(northButton);
@@ -288,6 +298,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
                     southButton.setOnClickListener(view -> {
                         Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
                         startActivity(aboutIntent);
+                        stopMusic();
                         Toast.makeText(this, "You successfully left dungeon.", Toast.LENGTH_SHORT).show();
                     });
                 } else {
@@ -379,6 +390,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             if(!gameController.playerIsAlive()) {
                 Intent aboutIntent = new Intent(GameActivity.this, GameOverActivity.class);
                 startActivity(aboutIntent);
+                stopMusic();
             }
         }
         renderPlayerInfo();
@@ -416,11 +428,19 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             gameController.saveGame(this);
             Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
             startActivity(aboutIntent);
+            stopMusic();
         });
         enableButton(menuExitButton);
         menuExitButton.setOnClickListener(view->{
             Intent aboutIntent = new Intent(GameActivity.this, MainActivity.class);
             startActivity(aboutIntent);
+            stopMusic();
         });
+    }
+    protected void stopMusic() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

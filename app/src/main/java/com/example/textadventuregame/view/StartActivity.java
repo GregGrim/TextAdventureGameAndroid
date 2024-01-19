@@ -20,7 +20,6 @@ public class StartActivity extends AppCompatActivity {
     Button newGame;
     Button loadGame;
     Button backBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

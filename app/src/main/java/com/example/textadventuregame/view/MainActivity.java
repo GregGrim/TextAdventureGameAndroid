@@ -3,6 +3,7 @@ package com.example.textadventuregame.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -22,17 +23,26 @@ public class MainActivity extends AppCompatActivity {
     Button helpButton;
     Button exitButton;
     TextView text;
+    private ImageView castleImage;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         setupControls();
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ResourceType"})
     private void setupControls() {
+
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.mainwindow);
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(mp -> mediaPlayer.start());
+
+        castleImage = findViewById(R.id.castleImage);
+        castleImage.setImageResource(R.drawable.castle_image);
 
         ImageView gifImageView = findViewById(R.id.backgroundGif);
         String gifUrl = "https://i.gifer.com/origin/ff/ff1b86f96f05b3af08de65a8cb3df2ea.gif";
@@ -52,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         startButton.setTextSize(18);
         startButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         startButton.setOnClickListener(view -> {
+            stopMusic();
             Intent aboutIntent = new Intent(MainActivity.this, StartActivity.class);
             startActivity(aboutIntent);
         });
@@ -60,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         aboutButton.setTextSize(18);
         aboutButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         aboutButton.setOnClickListener(view -> {
+            stopMusic();
             Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
         });
@@ -68,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         helpButton.setTextSize(18);
         helpButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         helpButton.setOnClickListener(view -> {
+            stopMusic();
             Intent aboutIntent = new Intent(MainActivity.this, HelpActivity.class);
             startActivity(aboutIntent);
         });
@@ -75,6 +88,15 @@ public class MainActivity extends AppCompatActivity {
         exitButton.setBackgroundColor(Color.GRAY);
         exitButton.setTextSize(18);
         exitButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        exitButton.setOnClickListener(view -> finishAffinity());
+        exitButton.setOnClickListener(view -> {
+            finishAffinity();
+            stopMusic();
+        });
+    }
+    protected void stopMusic() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

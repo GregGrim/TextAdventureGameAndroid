@@ -3,9 +3,13 @@ package com.example.textadventuregame.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +24,6 @@ public class NewGameActivity extends AppCompatActivity {
     Button startNewGame;
     Button backBtn;
     TextInputEditText playerNameText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,8 @@ public class NewGameActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void setupControls() {
+
+
         ImageView gifImageView = findViewById(R.id.newGameGif);
         String gifUrl = "https://media.tenor.com/K7-ivtVTJ7YAAAAM/dnd-creature.gif";
         Glide.with(this)

@@ -130,10 +130,6 @@ public class GameController {
             XmlMapper xmlMapper = new XmlMapper();
             xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
-            // test
-//            TestClass testClass = new TestClass();
-//            testClass.setName("testclassname");
-//            testClass.setPlayer(new Player("playerName"));;
             xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file,gameModel);
             System.out.println("Game saved successfully!");
         } catch (Exception e) {
@@ -147,44 +143,12 @@ public class GameController {
             XmlMapper xmlMapper = new XmlMapper();
             xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
-
-            //test
-//            TestClass testClass = xmlMapper.readValue(file, TestClass.class);
-//            System.out.println(testClass);
             GameModel gameData = xmlMapper.readValue(file, GameModel.class);
 
             System.out.println("Game loaded successfully!");
             gameModel = gameData;
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-    private class TestClass {
-        private String name;
-        private Player player;
-        public TestClass() {
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public Player getPlayer() {
-            return player;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setPlayer(Player player) {
-            this.player = player;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "name: "+this.name+" player:"+this.player;
         }
     }
 }

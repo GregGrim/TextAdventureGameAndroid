@@ -179,8 +179,8 @@
 
     <ScrollView
         android:id="@+id/battleLogScrollView"
-        android:layout_width="308dp"
-        android:layout_height="253dp"
+        android:layout_width="291dp"
+        android:layout_height="250dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
