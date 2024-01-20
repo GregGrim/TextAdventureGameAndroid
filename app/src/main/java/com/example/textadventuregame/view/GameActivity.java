@@ -1,5 +1,6 @@
 package com.example.textadventuregame.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -48,6 +51,7 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
     private Button saveGameButton;
     private Button saveGameAndExitButton;
     private Button menuExitButton;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,6 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         locationText = findViewById(R.id.locationInfo);
         locationText.setTextSize(15);
         locationText.setTextColor(Color.WHITE);
-        locationText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         menuButton = findViewById(R.id.menuBtn);
         saveGameButton = findViewById(R.id.saveGameButton);
@@ -207,7 +210,9 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
         locationImage.setImageResource(imageResourceId);
     }
     private void renderLocationText() {
-        locationText.setText(gameController.getLocationText());
+        handler.removeCallbacksAndMessages(null);
+        typingAnimation(gameController.getLocationText(), locationText);
+        handler.sendMessage(handler.obtainMessage(0));
     }
     private void renderPlayerInfo() {
           playerInfo.setText(gameController.getPlayerInfoText());
@@ -442,5 +447,20 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
+    private void typingAnimation(String fullText, TextView typingTextView) {
+        // Creates a handler to simulate typing animation
+
+         handler = new Handler(getMainLooper()) {
+            int charIndex = 0;
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (charIndex <= fullText.length()) {
+                    typingTextView.setText(fullText.substring(0, charIndex++));
+                    sendMessageDelayed(obtainMessage(0), 70);
+                }
+            }
+        };
     }
 }
