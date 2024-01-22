@@ -72,10 +72,6 @@ public class GameModel implements Serializable {
 
     public void createInventory() {
         inventory = new ArrayList<>();
-        inventory.add(new MedKit());
-        inventory.add(new Potion());
-        inventory.add(new DragonBlade());
-        inventory.add(new MagicSword());
         inventory.add(new Sword());
         inventory.add(new Shield());
     }

@@ -29,7 +29,7 @@ public class Potion extends Item implements Serializable {
     }
     @Override
     public String getBonusesDesc() {
-        return "MA: +"+magic_power_bonus+"  HP: -"+hp_decrease;
+        return "MA: +"+magic_power_bonus+"  HP: -"+hp_decrease+"  (1 use)";
     }
 
     @Override

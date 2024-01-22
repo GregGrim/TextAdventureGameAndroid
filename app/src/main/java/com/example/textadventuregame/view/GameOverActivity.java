@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,8 @@ public class GameOverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.losesound);
+        mediaPlayer.start();
 
         TextView gameOverText = findViewById(R.id.gameOverText);
         gameOverText.setTextColor(Color.WHITE);

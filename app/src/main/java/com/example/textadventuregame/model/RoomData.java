@@ -3,7 +3,7 @@ package com.example.textadventuregame.model;
 public class RoomData {
     public static final String[][] ROOM_DATA = {
             {"Entrance Hall",
-                    "You stand in a dimly lit entrance hall. The air is thick with anticipation. You don`t know yet what you will face down there. There are rumors that a dragon lurks in the depths. Revise your inventory and step into the dark.",
+                    "You stand in a dimly lit entrance hall. The air is thick with anticipation. You don`t know yet what you will face down there. There are rumors that a dragon lurks in the depths. Revise your inventory and step into the darkness.",
                     "None",
                     "None",
                     "entrance_hall_image",
