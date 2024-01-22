@@ -463,4 +463,15 @@ public class GameActivity extends AppCompatActivity implements RecyclerViewInter
             }
         };
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopMusic();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mediaPlayer.start();
+    }
 }

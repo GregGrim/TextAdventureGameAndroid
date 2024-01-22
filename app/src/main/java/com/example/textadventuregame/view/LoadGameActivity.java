@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.textadventuregame.R;
@@ -16,7 +15,6 @@ import com.example.textadventuregame.R;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LoadGameActivity extends AppCompatActivity {
     private Button loadButton;
@@ -29,6 +27,7 @@ public class LoadGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_game);
+        MusicPlayer.getInstance(this).startMusic();
 
         backButton = findViewById(R.id.loadGameBackButton);
         backButton.setBackgroundColor(Color.GRAY);
@@ -37,6 +36,7 @@ public class LoadGameActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> {
             Intent aboutIntent = new Intent(LoadGameActivity.this, StartActivity.class);
             startActivity(aboutIntent);
+            MusicPlayer.getInstance(this).pauseMusic();
         });
 
         loadButton = findViewById(R.id.loadButton);
@@ -76,8 +76,21 @@ public class LoadGameActivity extends AppCompatActivity {
                 Intent aboutIntent = new Intent(LoadGameActivity.this, GameActivity.class);
                 aboutIntent.putExtra("parameter", filename);
                 startActivity(aboutIntent);
+                MusicPlayer.getInstance(this).pauseMusic();
             });
         });
         linearScroll.addView(textView);
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MusicPlayer.getInstance(this).pauseMusic();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MusicPlayer.getInstance(this).startMusic();
+    }
+
 }

@@ -33,7 +33,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void setupControls() {
-
+        MusicPlayer.getInstance(this).startMusic();
 
         ImageView gifImageView = findViewById(R.id.newGameGif);
         String gifUrl = "https://media.tenor.com/K7-ivtVTJ7YAAAAM/dnd-creature.gif";
@@ -64,6 +64,7 @@ public class NewGameActivity extends AppCompatActivity {
                 Intent aboutIntent = new Intent(NewGameActivity.this, GameActivity.class);
                 aboutIntent.putExtra("parameter", playerNameText.getText().toString());
                 startActivity(aboutIntent);
+                MusicPlayer.getInstance(this).pauseMusic();
             }
         });
 
@@ -74,8 +75,20 @@ public class NewGameActivity extends AppCompatActivity {
         backBtn.setOnClickListener(view -> {
             Intent aboutIntent = new Intent(NewGameActivity.this, StartActivity.class);
             startActivity(aboutIntent);
+            MusicPlayer.getInstance(this).pauseMusic();
         });
 
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MusicPlayer.getInstance(this).pauseMusic();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MusicPlayer.getInstance(this).startMusic();
     }
 
 }

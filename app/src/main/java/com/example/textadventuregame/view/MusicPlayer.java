@@ -7,19 +7,21 @@ import com.example.textadventuregame.R;
 
 public class MusicPlayer extends MediaPlayer {
     public static MusicPlayer musicPlayer;
-    private MusicPlayer(){
+    private final MediaPlayer mediaPlayer;
+    private MusicPlayer(Context ctx){
+        mediaPlayer = MediaPlayer.create(ctx, R.raw.startwindow);
     }
     public static synchronized MusicPlayer getInstance(Context ctx) {
         if (musicPlayer == null) {
-            musicPlayer = (MusicPlayer) MediaPlayer.create(ctx, R.raw.startwindow);
+            musicPlayer = new MusicPlayer(ctx);
+            musicPlayer.setOnCompletionListener(mp -> musicPlayer.start());
         }
         return musicPlayer;
     }
     public void startMusic() {
-        musicPlayer.start();
-        musicPlayer.setOnCompletionListener(mp -> musicPlayer.start());
+        if(!mediaPlayer.isPlaying()) mediaPlayer.start();
     }
-    public void stopMusic() {
-        musicPlayer.stop();
+    public void pauseMusic() {
+        if(mediaPlayer.isPlaying()) mediaPlayer.pause();
     }
 }

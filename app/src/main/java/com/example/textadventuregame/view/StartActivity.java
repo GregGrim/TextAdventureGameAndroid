@@ -20,11 +20,13 @@ public class StartActivity extends AppCompatActivity {
     Button newGame;
     Button loadGame;
     Button backBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         setupControls();
+        MusicPlayer.getInstance(this).startMusic();
     }
 
     @SuppressLint("SetTextI18n")
@@ -49,6 +51,7 @@ public class StartActivity extends AppCompatActivity {
         newGame.setOnClickListener(view -> {
             Intent aboutIntent = new Intent(StartActivity.this, NewGameActivity.class);
             startActivity(aboutIntent);
+            MusicPlayer.getInstance(this).pauseMusic();
         });
         loadGame = findViewById(R.id.loadGameBtn);
         loadGame.setBackgroundColor(Color.GRAY);
@@ -57,6 +60,8 @@ public class StartActivity extends AppCompatActivity {
         loadGame.setOnClickListener(view -> {
             Intent aboutIntent = new Intent(StartActivity.this, LoadGameActivity.class);
             startActivity(aboutIntent);
+            MusicPlayer.getInstance(this).pauseMusic();
+
         });
         backBtn = findViewById(R.id.backBtnStart);
         backBtn.setBackgroundColor(Color.GRAY);
@@ -65,6 +70,19 @@ public class StartActivity extends AppCompatActivity {
         backBtn.setOnClickListener(view -> {
             Intent aboutIntent = new Intent(StartActivity.this, MainActivity.class);
             startActivity(aboutIntent);
+            MusicPlayer.getInstance(this).pauseMusic();
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MusicPlayer.getInstance(this).pauseMusic();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MusicPlayer.getInstance(this).startMusic();
     }
 }
