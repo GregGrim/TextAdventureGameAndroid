@@ -8,7 +8,7 @@ public class Sword extends Item implements Serializable {
     private String imageFileName;
     public Sword(){
         super();
-        phys_power_bonus = (int)(Math.random()*5)+1;
+        phys_power_bonus = (int)(Math.random()*4)+2;
         this.name = "Sword";
         this.imageFileName = "sword_image";
     }
